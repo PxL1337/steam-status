@@ -12,7 +12,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 final class Cs2StatusController extends AbstractController
 {
-    #[Route('/cs2', name: 'csgo_status')]
+    #[Route('/', name: 'cs2_status')]
     public function index(Cs2StatusRepository $repo, ChartBuilderInterface $chartBuilder): Response
     {
         // Récupère le plus récent enregistrement
@@ -66,12 +66,15 @@ final class Cs2StatusController extends AbstractController
         // Préparation des labels (heure ou format) et data (online_players)
         $labels = [];
         $playersData = [];
+        $gameServers = [];
 
         foreach ($statuses as $status) {
             $labels[] = $status->getFetchedAt()->format('H:i');
             $rawData = $status->getRawData();
             $onlinePlayers = $rawData['matchmaking']['online_players'] ?? 0;
+            $onlineServers = $rawData['matchmaking']['online_servers'] ?? 0;
             $playersData[] = $onlinePlayers;
+            $gameServers[] = $onlineServers;
         }
 
         // Construire le chart
@@ -84,6 +87,12 @@ final class Cs2StatusController extends AbstractController
                     'data' => $playersData,
                     'borderColor' => 'rgb(75, 192, 192)',
                     'backgroundColor' => 'rgba(75, 192, 192, 0.1)',
+                ],
+                [
+                    'label' => 'Online Game Servers (24h)',
+                    'data' => $gameServers,
+                    'borderColor' => 'rgb(255, 99, 132)',
+                    'backgroundColor' => 'rgba(255, 99, 132, 0.1)',
                 ],
             ],
         ]);

@@ -1,0 +1,44 @@
+body {
+    background-color: #f0f0f0;
+}
+
+.card-header {
+    background-color: #333;
+    color: #fff;
+}
+
+/* assets/styles/custom.css */
+
+/* On peut surcharger ou définir des classes supplémentaires */
+
+.load-idle {
+    background-color: #17a2b8;  /* un turquoise style Bootstrap “info” */
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.load-low {
+    background-color: #28a745; /* success */
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.load-medium {
+    background-color: #ffc107; /* warning */
+    color: #000;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.load-high {
+    background-color: #dc3545; /* danger */
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}

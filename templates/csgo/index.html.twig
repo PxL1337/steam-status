@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">CS2 Status</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">Informations générales</div>
+                    <div class="card-body">
+                        <p><strong>Fetched at:</strong> {{ csgo.fetchedAt|date('Y-m-d H:i:s') }}</p>
+                        <p><strong>App Version:</strong> {{ csgo.appVersion }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">Matchmaking</div>
+                    <div class="card-body">
+                        <p>Online servers: {{ data.matchmaking.online_servers }}</p>
+                        <p>Online players: {{ data.matchmaking.online_players }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-4"
+             data-controller="auto-refresh"
+             data-auto-refresh-interval-value="60"
+        >
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>Historique du nombre de joueurs (24h)</h1>
+                </div>
+                <div class="col-md-4 text-end">
+                    <p class="mt-2">
+                        <small class="text-muted">
+                            Prochain rafraîchissement dans
+                            <span data-auto-refresh-target="countdown">60</span>
+                            s...
+                        </small>
+                    </p>
+                </div>
+            </div>
+
+            <div class="my-3">
+                {{ render_chart(chart) }}
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header">Services</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for serviceName, serviceStatus in data.services %}
+                        <li class="list-group-item">
+                            <strong>{{ serviceName }}</strong> : {{ serviceStatus }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header">Datacenters (par région)</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Région</th>
+                        <th>Datacenter</th>
+                        <th>Capacity</th>
+                        <th>Load</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for regionName, datacenters in groupedDatacenters %}
+                        {% if datacenters is not empty %}
+                            <tr class="table-secondary">
+                                <td colspan="4">
+                                    <strong>{{ regionName }}</strong>
+                                </td>
+                            </tr>
+                            {% for dc in datacenters %}
+                                <tr>
+                                    <td></td>
+                                    <td>{{ dc.name }}</td>
+                                    <td>
+                                        {% if dc.capacity == 'full' %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check-circle"></i>
+                                                Full
+                                            </span>
+                                        {% elseif dc.capacity == 'partial' %}
+                                            <span class="badge bg-warning">
+                                                <i class="fas fa-exclamation-circle"></i>
+                                                Partial
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-dark">
+                                                <i class="fas fa-question-circle"></i>
+                                                {{ dc.capacity }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if dc.load == 'idle' %}
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-circle-notch"></i> Idle
+                                            </span>
+                                        {% elseif dc.load == 'low' %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-battery-quarter"></i> Low
+                                            </span>
+                                        {% elseif dc.load == 'medium' %}
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fas fa-battery-half"></i> Medium
+                                            </span>
+                                        {% elseif dc.load == 'high' %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-battery-full"></i> High
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">
+                                                <i class="fas fa-question-circle"></i>
+                                                {{ dc.load }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

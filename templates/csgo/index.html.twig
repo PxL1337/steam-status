@@ -2,74 +2,85 @@
 
 {% block body %}
     <div class="container mt-4">
+
         <h1 class="mb-4">CS2 Status</h1>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-3">
-                    <div class="card-header">Informations générales</div>
-                    <div class="card-body">
-                        <p><strong>Fetched at:</strong> {{ csgo.fetchedAt|date('Y-m-d H:i:s') }}</p>
-                        <p><strong>App Version:</strong> {{ csgo.appVersion }}</p>
-                    </div>
-                </div>
+        {# Bloc unique: FetchedAt + AppVersion #}
+        <div class="card mb-3">
+            <div class="card-header">Informations générales</div>
+            <div class="card-body">
+                <p><strong>Fetched at:</strong> {{ csgo.fetchedAt|date('D-M-Y H:i:s') }}</p>
+                <p><strong>App Version:</strong> {{ csgo.appVersion }}</p>
             </div>
+        </div>
+
+        {# Row: Matchmaking col / Services col #}
+        <div class="row">
             <div class="col-md-6">
                 <div class="card mb-3">
                     <div class="card-header">Matchmaking</div>
                     <div class="card-body">
                         <p>Online servers: {{ data.matchmaking.online_servers }}</p>
                         <p>Online players: {{ data.matchmaking.online_players }}</p>
+                        <p>Searching players: {{ data.matchmaking.searching_players }}</p>
+                        <p>Scheduler: {{ data.matchmaking.scheduler }}</p>
+                        <p>Search Average: {{ data.matchmaking.search_seconds_avg }}s</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">Services</div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% for serviceName, serviceStatus in data.services %}
+                                <li class="list-group-item">
+                                    <strong>{{ serviceName }}</strong> : {{ serviceStatus }}
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
 
+        {# Graph #}
         <div class="container mt-4"
              data-controller="auto-refresh"
              data-auto-refresh-interval-value="60"
         >
             <div class="row">
                 <div class="col-md-8">
-                    <h1>Historique du nombre de joueurs (24h)</h1>
+                    <h2>Historique du nombre de joueurs (24h)</h2>
                 </div>
                 <div class="col-md-4 text-end">
                     <p class="mt-2">
                         <small class="text-muted">
                             Prochain rafraîchissement dans
-                            <span data-auto-refresh-target="countdown">60</span>
-                            s...
+                            <span data-auto-refresh-target="countdown">60</span> s...
                         </small>
                     </p>
                 </div>
             </div>
-
             <div class="my-3">
                 {{ render_chart(chart) }}
             </div>
         </div>
 
-        <div class="card mb-3">
-            <div class="card-header">Services</div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    {% for serviceName, serviceStatus in data.services %}
-                        <li class="list-group-item">
-                            <strong>{{ serviceName }}</strong> : {{ serviceStatus }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
+        {# Tableau final: groupé par region =>
+       Sous-ligne "table-secondary" => <td colspan="3">{{ regionName }}</td>
+       Sous-lignes => 3 colonnes:
+         1) Pays + drapeau
+         2) Capacity
+         3) Load
+        #}
         <div class="card mb-3">
             <div class="card-header">Datacenters (par région)</div>
             <div class="card-body">
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Région</th>
-                        <th>Datacenter</th>
+                        <th>Region</th>
                         <th>Capacity</th>
                         <th>Load</th>
                     </tr>
@@ -78,55 +89,76 @@
                     {% for regionName, datacenters in groupedDatacenters %}
                         {% if datacenters is not empty %}
                             <tr class="table-secondary">
-                                <td colspan="4">
+                                <td colspan="3">
                                     <strong>{{ regionName }}</strong>
                                 </td>
                             </tr>
                             {% for dc in datacenters %}
                                 <tr>
-                                    <td></td>
-                                    <td>{{ dc.name }}</td>
+                                    {# 1ère col = city en priorité, sinon country #}
+                                    <td>
+                                        {% if dc.flag %}
+                                            <span class="fi fi-{{ dc.flag }}" style="margin-right:6px;"></span>
+                                        {% endif %}
+
+                                        {% if dc.city %}
+                                            {{ dc.city }}
+                                        {% else %}
+                                            {{ dc.country }}
+                                        {% endif %}
+                                    </td>
+
+                                    {# 2ème col = capacity #}
                                     <td>
                                         {% if dc.capacity == 'full' %}
                                             <span class="badge bg-success">
-                                                <i class="fas fa-check-circle"></i>
-                                                Full
-                                            </span>
+                    <i class="fas fa-check-circle"></i>
+                    Full
+                  </span>
                                         {% elseif dc.capacity == 'partial' %}
                                             <span class="badge bg-warning">
-                                                <i class="fas fa-exclamation-circle"></i>
-                                                Partial
-                                            </span>
-                                        {% else %}
+                    <i class="fas fa-exclamation-circle"></i>
+                    Partial
+                  </span>
+                                        {% elseif dc.capacity %}
                                             <span class="badge bg-dark">
-                                                <i class="fas fa-question-circle"></i>
-                                                {{ dc.capacity }}
-                                            </span>
+                    <i class="fas fa-question-circle"></i>
+                    {{ dc.capacity }}
+                  </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">N/A</span>
                                         {% endif %}
                                     </td>
+
+                                    {# 3ème col = load #}
                                     <td>
                                         {% if dc.load == 'idle' %}
-                                            <span class="badge bg-info">
-                                                <i class="fas fa-circle-notch"></i> Idle
-                                            </span>
+                                            <span class="badge bg-info d-inline-flex align-items-center">
+    <twig:ux:icon name="line-md:gauge-empty" class="icon-gauge me-1" />
+    Idle
+  </span>
                                         {% elseif dc.load == 'low' %}
-                                            <span class="badge bg-success">
-                                                <i class="fas fa-battery-quarter"></i> Low
-                                            </span>
+                                            <span class="badge bg-success d-inline-flex align-items-center">
+    <twig:ux:icon name="line-md:gauge-low" class="icon-gauge me-1" />
+    Low
+  </span>
                                         {% elseif dc.load == 'medium' %}
-                                            <span class="badge bg-warning text-dark">
-                                                <i class="fas fa-battery-half"></i> Medium
-                                            </span>
+                                            <span class="badge bg-warning text-dark d-inline-flex align-items-center">
+    <twig:ux:icon name="line-md:gauge" class="icon-gauge me-1" />
+    Medium
+  </span>
                                         {% elseif dc.load == 'high' %}
-                                            <span class="badge bg-danger">
-                                                <i class="fas fa-battery-full"></i> High
-                                            </span>
+                                            <span class="badge bg-danger d-inline-flex align-items-center">
+    <twig:ux:icon name="line-md:gauge-full" class="icon-gauge me-1" />
+    High
+  </span>
                                         {% else %}
-                                            <span class="badge bg-secondary">
-                                                <i class="fas fa-question-circle"></i>
-                                                {{ dc.load }}
-                                            </span>
+                                            <span class="badge bg-secondary d-inline-flex align-items-center">
+    <twig:ux:icon name="line-md:gauge" class="icon-gauge me-1" />
+    {{ dc.load }}
+  </span>
                                         {% endif %}
+
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -136,5 +168,6 @@
                 </table>
             </div>
         </div>
+
     </div>
 {% endblock %}

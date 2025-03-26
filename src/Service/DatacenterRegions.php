@@ -23,7 +23,8 @@ class DatacenterRegions
             str_contains($dcName, 'spain') ||
             str_contains($dcName, 'sweden') ||
             str_contains($dcName, 'poland') ||
-            str_contains($dcName, 'austria')
+            str_contains($dcName, 'austria') ||
+            str_contains($dcName, 'kingdom')
         ) {
             return 'Europe';
         }

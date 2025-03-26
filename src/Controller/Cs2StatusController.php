@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\Cs2StatusRepository;
 use App\Service\DatacenterRegions;
+use App\Service\DCMapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,48 +14,56 @@ use Symfony\UX\Chartjs\Model\Chart;
 final class Cs2StatusController extends AbstractController
 {
     #[Route('/', name: 'cs2_status')]
-    public function index(Cs2StatusRepository $repo, ChartBuilderInterface $chartBuilder): Response
-    {
-        // Récupère le plus récent enregistrement
+    public function index(
+        Cs2StatusRepository $repo,
+        ChartBuilderInterface $chartBuilder
+    ): Response {
+        // 1) Récupérer le plus récent enregistrement ICSGOServers_730
         $lastStatus = $repo->findOneBy([], ['fetchedAt' => 'DESC']);
-
         if (!$lastStatus) {
-            return new Response('Pas de data en base, exécutez app:update-steam-status');
+            return new Response('Pas de data en base, exécutez app:update-steAM-status');
         }
 
-        // Récupère les données brutes
+        // 2) Données brutes ICSGOServers
         $data = $lastStatus->getRawData();
+        // ex. $data['datacenters'] => "EU Germany"=>["capacity"=>..., "load"=>...]
 
-        // On prépare un tableau associatif pour regrouper par région
+        // 3) Construire un array groupé par région => [ "Europe"=> [ {...}, {...} ], "Amérique"=>[], ... ]
         $groupedDatacenters = [
-            'Europe'    => [],
-            'Amérique'  => [],
-            'Asie'      => [],
-            'Océanie'   => [],
-            'Afrique'   => [],
-            'Autres'    => [],
+            'Europe'   => [],
+            'Amérique' => [],
+            'Asie'     => [],
+            'Océanie'  => [],
+            'Afrique'  => [],
+            'Autres'   => [],
         ];
 
-        // Vérifie si 'datacenters' est défini
         if (isset($data['datacenters']) && is_array($data['datacenters'])) {
             foreach ($data['datacenters'] as $dcName => $dcInfo) {
-                // Détermine la région
                 $region = DatacenterRegions::getRegionGroup($dcName);
 
-                // Si la région n'existe pas, on met dans 'Autres'
-                if (!array_key_exists($region, $groupedDatacenters)) {
+                $mapped = DCMapper::mapCsgoDatacenter($dcName);
+                // => [ 'city' => 'Frankfurt', 'country' => 'Germany', 'flag'=>'de' ]
+
+                $capacity = $dcInfo['capacity'] ?? null;
+                $load     = $dcInfo['load']     ?? null;
+
+                // On range dans $groupedDatacenters[$region]
+                if (!isset($groupedDatacenters[$region])) {
                     $region = 'Autres';
                 }
 
                 $groupedDatacenters[$region][] = [
-                    'name'     => $dcName,
-                    'capacity' => $dcInfo['capacity'] ?? null,
-                    'load'     => $dcInfo['load'] ?? null,
+                    'city' => $mapped['city'],       // ex. "Frankfurt"
+                    'country' => $mapped['country'], // ex. "Germany"
+                    'flag' => $mapped['flag'],       // ex. "de"
+                    'capacity' => $capacity,
+                    'load' => $load,
                 ];
             }
         }
 
-        // On récupère les 24 dernières heures
+        // === Graph matchmaking (comme avant)
         $since = new \DateTime('-24 hours');
         $statuses = $repo->createQueryBuilder('c')
             ->where('c.fetchedAt > :since')
@@ -63,21 +72,24 @@ final class Cs2StatusController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        // Préparation des labels (heure ou format) et data (online_players)
         $labels = [];
         $playersData = [];
         $gameServers = [];
-
+        $searchingPlayersData = [];
+        $searchAverageData = [];
         foreach ($statuses as $status) {
             $labels[] = $status->getFetchedAt()->format('H:i');
             $rawData = $status->getRawData();
             $onlinePlayers = $rawData['matchmaking']['online_players'] ?? 0;
             $onlineServers = $rawData['matchmaking']['online_servers'] ?? 0;
+            $searchingPlayers = $rawData['matchmaking']['searching_players'] ?? 0;
+            $searchAverage = $rawData['matchmaking']['search_seconds_avg'] ?? 0;
             $playersData[] = $onlinePlayers;
             $gameServers[] = $onlineServers;
+            $searchingPlayersData[] = $searchingPlayers;
+            $searchAverageData[] = $searchAverage;
         }
 
-        // Construire le chart
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
             'labels' => $labels,
@@ -94,21 +106,32 @@ final class Cs2StatusController extends AbstractController
                     'borderColor' => 'rgb(255, 99, 132)',
                     'backgroundColor' => 'rgba(255, 99, 132, 0.1)',
                 ],
+                [
+                    'label' => 'Searching Players (24h)',
+                    'data' => $searchingPlayersData,
+                    'borderColor' => 'rgb(120, 200, 120)',
+                    'backgroundColor' => 'rgb(120, 200, 120, 0.1)',
+                ],
+                [
+                    'label' => 'Searching Average (24h)',
+                    'data' => $searchAverageData,
+                    'borderColor' => 'rgb(200, 200, 120)',
+                    'backgroundColor' => 'rgb(200, 200, 120, 0.1)',
+                ],
             ],
         ]);
         $chart->setOptions([
             'scales' => [
-                'y' => [
-                    'beginAtZero' => false
-                ]
+                'y' => ['beginAtZero' => false],
             ],
         ]);
 
+        // 4) On passe tout ça au template
         return $this->render('csgo/index.html.twig', [
-            'csgo'                => $lastStatus,
-            'data'                => $data,
-            'groupedDatacenters'  => $groupedDatacenters,
-            'chart' => $chart,
+            'csgo'               => $lastStatus,
+            'data'               => $data,
+            'chart'              => $chart,
+            'groupedDatacenters' => $groupedDatacenters, // groupé par region
         ]);
     }
 }

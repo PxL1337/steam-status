@@ -42,3 +42,10 @@ body {
     border-radius: 4px;
     font-weight: 600;
 }
+
+
+.icon-gauge {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle; /* ou top/middle selon le rendu souhaité */
+}

@@ -48,4 +48,8 @@ return [
     'chart.js' => [
         'version' => '3.9.1',
     ],
+    'flag-icons/css/flag-icons.min.css' => [
+        'version' => '7.3.2',
+        'type' => 'css',
+    ],
 ];

@@ -153,34 +153,60 @@
                                             {% if dc.flag %}
                                                 <span class="fi fi-{{ dc.flag }}" style="margin-right:6px;"></span>
                                             {% endif %}
-                                            {% if dc.city %}
-                                                {{ dc.city }}
-                                            {% else %}
-                                                {{ dc.country }}
-                                            {% endif %}
+                                            {% if dc.city %}{{ dc.city }}{% else %}{{ dc.country }}{% endif %}
                                         </td>
+                                        {# Dans la colonne Capacity, on insère un <twig:ux:icon> selon la valeur #}
                                         <td>
                                             {% if dc.capacity == 'full' %}
-                                                <span class="badge bg-success">Full</span>
+                                                <span class="badge bg-success d-inline-flex align-items-center">
+                                                    <twig:ux:icon name="prime:check-circle" class="icon-gauge me-1" />
+                                                    Full
+                                                </span>
                                             {% elseif dc.capacity == 'partial' %}
-                                                <span class="badge bg-warning">Partial</span>
+                                                <span class="badge bg-warning text-dark d-inline-flex align-items-center">
+                                                    <twig:ux:icon name="line-md:warning-circle" class="icon-gauge me-1" />
+                                                    Partial
+                                                </span>
                                             {% elseif dc.capacity %}
-                                                <span class="badge bg-dark">{{ dc.capacity }}</span>
+                                                <span class="badge bg-dark d-inline-flex align-items-center">
+                                                    <twig:ux:icon name="line-md:question-circle" class="icon-gauge me-1" />
+                                                    {{ dc.capacity }}
+                                                </span>
                                             {% else %}
-                                                <span class="badge bg-secondary">N/A</span>
+                                                <span class="badge bg-secondary d-inline-flex align-items-center">
+                                                    <twig:ux:icon name="line-md:question-circle" class="icon-gauge me-1" />
+                                                    N/A
+                                                </span>
                                             {% endif %}
                                         </td>
+
                                         <td>
+                                            {# load (Idle, Low, Medium, High) => icônes line-md #}
                                             {% if dc.load == 'idle' %}
-                                                <span class="badge bg-info">Idle</span>
+                                                <span class="badge bg-info d-inline-flex align-items-center">
+                                                <twig:ux:icon name="line-md:gauge-empty" class="icon-gauge me-1" />
+                                                Idle
+                                            </span>
                                             {% elseif dc.load == 'low' %}
-                                                <span class="badge bg-success">Low</span>
+                                                <span class="badge bg-success d-inline-flex align-items-center">
+                                                <twig:ux:icon name="line-md:gauge-low" class="icon-gauge me-1" />
+                                                Low
+                                            </span>
                                             {% elseif dc.load == 'medium' %}
-                                                <span class="badge bg-warning text-dark">Medium</span>
+                                                <span class="badge bg-warning text-dark d-inline-flex align-items-center">
+                                                <twig:ux:icon name="line-md:gauge" class="icon-gauge me-1" />
+                                                Medium
+                                            </span>
                                             {% elseif dc.load == 'high' %}
-                                                <span class="badge bg-danger">High</span>
+                                                <span class="badge bg-danger d-inline-flex align-items-center">
+                                                <twig:ux:icon name="line-md:gauge-full" class="icon-gauge me-1" />
+                                                High
+                                            </span>
                                             {% else %}
-                                                <span class="badge bg-secondary">{{ dc.load }}</span>
+                                                <span class="badge bg-secondary d-inline-flex align-items-center">
+                                                <twig:ux:icon name="line-md:gauge" class="icon-gauge me-1" />
+                                                {{ dc.load }}
+                                            </span>
                                             {% endif %}
                                         </td>
                                     </tr>

@@ -2,10 +2,10 @@ body {
     background-color: #f0f0f0;
 }
 
-.card-header {
+/*.card-header {
     background-color: #333;
     color: #fff;
-}
+}*/
 
 /* assets/styles/custom.css */
 
@@ -47,5 +47,5 @@ body {
 .icon-gauge {
     width: 20px;
     height: 20px;
-    vertical-align: middle; /* ou top/middle selon le rendu souhaité */
+    /*vertical-align: middle; !* ou top/middle selon le rendu souhaité *!*/
 }

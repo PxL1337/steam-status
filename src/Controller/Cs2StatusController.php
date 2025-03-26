@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\Cs2StatusRepository;
 use App\Service\DatacenterRegions;
 use App\Service\DCMapper;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,7 +27,6 @@ final class Cs2StatusController extends AbstractController
 
         // 2) Données brutes ICSGOServers
         $data = $lastStatus->getRawData();
-        // ex. $data['datacenters'] => "EU Germany"=>["capacity"=>..., "load"=>...]
 
         // 3) Construire un array groupé par région => [ "Europe"=> [ {...}, {...} ], "Amérique"=>[], ... ]
         $groupedDatacenters = [
@@ -40,31 +40,31 @@ final class Cs2StatusController extends AbstractController
 
         if (isset($data['datacenters']) && is_array($data['datacenters'])) {
             foreach ($data['datacenters'] as $dcName => $dcInfo) {
+                // Déterminer la "region" via DatacenterRegions
                 $region = DatacenterRegions::getRegionGroup($dcName);
 
+                // Mapper "EU Germany" => city/country/flag
                 $mapped = DCMapper::mapCsgoDatacenter($dcName);
-                // => [ 'city' => 'Frankfurt', 'country' => 'Germany', 'flag'=>'de' ]
 
                 $capacity = $dcInfo['capacity'] ?? null;
                 $load     = $dcInfo['load']     ?? null;
 
-                // On range dans $groupedDatacenters[$region]
-                if (!isset($groupedDatacenters[$region])) {
+                if (!array_key_exists($region, $groupedDatacenters)) {
                     $region = 'Autres';
                 }
 
                 $groupedDatacenters[$region][] = [
-                    'city' => $mapped['city'],       // ex. "Frankfurt"
-                    'country' => $mapped['country'], // ex. "Germany"
-                    'flag' => $mapped['flag'],       // ex. "de"
+                    'city' => $mapped['city'],
+                    'country' => $mapped['country'],
+                    'flag' => $mapped['flag'],
                     'capacity' => $capacity,
                     'load' => $load,
                 ];
             }
         }
 
-        // === Graph matchmaking (comme avant)
-        $since = new \DateTime('-24 hours');
+        // === Partie "Matchmaking" : créer 4 graphiques distincts sur 24h
+        $since = new DateTime('-24 hours');
         $statuses = $repo->createQueryBuilder('c')
             ->where('c.fetchedAt > :since')
             ->setParameter('since', $since)
@@ -72,66 +72,124 @@ final class Cs2StatusController extends AbstractController
             ->getQuery()
             ->getResult();
 
+        // On prépare 4 tableaux: OnlineServers, OnlinePlayers, SearchingPlayers, SearchAverage
         $labels = [];
-        $playersData = [];
-        $gameServers = [];
+        $onlineServersData = [];
+        $onlinePlayersData = [];
         $searchingPlayersData = [];
         $searchAverageData = [];
+
         foreach ($statuses as $status) {
             $labels[] = $status->getFetchedAt()->format('H:i');
-            $rawData = $status->getRawData();
-            $onlinePlayers = $rawData['matchmaking']['online_players'] ?? 0;
-            $onlineServers = $rawData['matchmaking']['online_servers'] ?? 0;
-            $searchingPlayers = $rawData['matchmaking']['searching_players'] ?? 0;
-            $searchAverage = $rawData['matchmaking']['search_seconds_avg'] ?? 0;
-            $playersData[] = $onlinePlayers;
-            $gameServers[] = $onlineServers;
-            $searchingPlayersData[] = $searchingPlayers;
-            $searchAverageData[] = $searchAverage;
+            $rawData  = $status->getRawData();
+            $mm       = $rawData['matchmaking'] ?? [];
+
+            $onlineServersData[]    = $mm['online_servers']      ?? 0;
+            $onlinePlayersData[]    = $mm['online_players']      ?? 0;
+            $searchingPlayersData[] = $mm['searching_players']   ?? 0;
+            $searchAverageData[]    = $mm['search_seconds_avg']  ?? 0;
         }
 
-        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
-        $chart->setData([
+        // 4) Construire 4 charts distincts
+        $chartServers = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chartServers->setData([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Online Servers (24h)',
+                    'data' => $onlineServersData,
+                    'pointStyle' => 'line',
+                    'borderColor' => 'rgb(75, 192, 192)',
+                    'backgroundColor' => 'rgba(75, 192, 192, 0.1)',
+                ]
+            ],
+        ]);
+        $chartServers->setOptions([
+            'scales' => [
+                'y' => ['beginAtZero' => false],
+            ],
+            'plugins' => [
+                'legend' => ['display' => false], // masque la légende
+            ],
+        ]);
+
+        $chartPlayers = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chartPlayers->setData([
             'labels' => $labels,
             'datasets' => [
                 [
                     'label' => 'Online Players (24h)',
-                    'data' => $playersData,
-                    'borderColor' => 'rgb(75, 192, 192)',
-                    'backgroundColor' => 'rgba(75, 192, 192, 0.1)',
-                ],
-                [
-                    'label' => 'Online Game Servers (24h)',
-                    'data' => $gameServers,
+                    'data' => $onlinePlayersData,
+                    'pointStyle' => 'line',
                     'borderColor' => 'rgb(255, 99, 132)',
                     'backgroundColor' => 'rgba(255, 99, 132, 0.1)',
-                ],
-                [
-                    'label' => 'Searching Players (24h)',
-                    'data' => $searchingPlayersData,
-                    'borderColor' => 'rgb(120, 200, 120)',
-                    'backgroundColor' => 'rgb(120, 200, 120, 0.1)',
-                ],
-                [
-                    'label' => 'Searching Average (24h)',
-                    'data' => $searchAverageData,
-                    'borderColor' => 'rgb(200, 200, 120)',
-                    'backgroundColor' => 'rgb(200, 200, 120, 0.1)',
-                ],
+                ]
             ],
         ]);
-        $chart->setOptions([
+        $chartPlayers->setOptions([
             'scales' => [
                 'y' => ['beginAtZero' => false],
             ],
+            'plugins' => [
+                'legend' => ['display' => false], // masque la légende
+            ],
         ]);
 
-        // 4) On passe tout ça au template
+        $chartSearching = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chartSearching->setData([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Searching Players (24h)',
+                    'data' => $searchingPlayersData,
+                    'pointStyle' => 'line',
+                    'borderColor' => 'rgb(120, 200, 120)',
+                    'backgroundColor' => 'rgba(120, 200, 120, 0.1)',
+                ]
+            ],
+        ]);
+        $chartSearching->setOptions([
+            'scales' => [
+                'y' => ['beginAtZero' => false],
+            ],
+            'plugins' => [
+                'legend' => ['display' => false], // masque la légende
+            ],
+        ]);
+
+        $chartSearchAvg = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chartSearchAvg->setData([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Search Average (24h)',
+                    'data' => $searchAverageData,
+                    'pointStyle' => 'line',
+                    'borderColor' => 'rgb(200, 200, 120)',
+                    'backgroundColor' => 'rgba(200, 200, 120, 0.1)',
+                ]
+            ],
+        ]);
+        $chartSearchAvg->setOptions([
+            'scales' => [
+                'y' => ['beginAtZero' => false],
+            ],
+            'plugins' => [
+                'legend' => ['display' => false], // masque la légende
+            ],
+        ]);
+
+        // On transmet tout ça au template
         return $this->render('csgo/index.html.twig', [
-            'csgo'               => $lastStatus,
-            'data'               => $data,
-            'chart'              => $chart,
-            'groupedDatacenters' => $groupedDatacenters, // groupé par region
+            'csgo' => $lastStatus,
+            'data' => $data,
+            // tableaux groupés par region (pour l'affichage datacenters)
+            'groupedDatacenters' => $groupedDatacenters,
+            // 4 mini-graph
+            'chartServers'   => $chartServers,
+            'chartPlayers'   => $chartPlayers,
+            'chartSearching' => $chartSearching,
+            'chartSearchAvg' => $chartSearchAvg,
         ]);
     }
 }

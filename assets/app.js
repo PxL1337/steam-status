@@ -11,5 +11,6 @@ import 'flag-icons/css/flag-icons.min.css';
  * which should already be in your base.html.twig.
  */
 import './styles/app.css';
+import './styles/steam.css';
 
 console.log('Hello from assets/app.js – Asset Mapper is alive! 🎉');

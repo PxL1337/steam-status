@@ -1,0 +1,181 @@
+/* ==========================
+   Thème BLEU (steam-blue)
+   => plus proche du client Steam actuel
+   ========================== */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    /* Police possible : font-family: "Motiva Sans", Arial, sans-serif; */
+}
+
+.steam-blue {
+    background-color: #1b2838;
+    color: #c7d5e0;
+    /* Police possible : font-family: "Motiva Sans", Arial, sans-serif; */
+}
+
+.steam-blue .card {
+    background-color: #2a475e;
+    border: 1px solid #000;
+    margin-bottom: 1rem;
+    color: #c7d5e0;
+}
+
+.steam-blue .card-header {
+    background-color: #17212f;
+    color: #66c0f4; /* bleu clair du client actuel */
+    font-weight: bold;
+}
+
+.steam-blue .badge {
+    font-weight: normal;
+}
+
+.steam-blue .table {
+    color: #c7d5e0;
+}
+
+.steam-blue .table-secondary {
+    background-color: #2a475e !important;
+}
+
+.steam-blue .list-group-item {
+    background-color: #2a475e;
+    border: none;
+}
+
+/* Liens, boutons, hover, etc. */
+.steam-blue a,
+.steam-blue .btn {
+    color: #66c0f4;
+}
+.steam-blue a:hover,
+.steam-blue .btn:hover {
+    color: #ffffff;
+}
+
+.steam-blue .datacenters-table {
+    width: 100%;
+    background-color: #2a475e;
+    color: #c7d5e0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.steam-blue .datacenters-table tbody tr.table-secondary td {
+    background-color: #1f2d3c !important; /* plus sombre que #2a475e */
+    color: #66c0f4 !important;           /* texte bleu clair */
+    font-weight: bold;
+}
+
+/* Les lignes paires qui ne sont pas .table-secondary */
+.steam-blue .datacenters-table tbody tr:not(.table-secondary):nth-child(even) td {
+    background-color: #25384a; /* un ton plus sombre que #2a475e */
+}
+
+.steam-blue .datacenters-table th,
+.steam-blue .datacenters-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #17212f;
+}
+
+.steam-blue .datacenters-table thead th {
+    background-color: #17212f;
+    color: #66c0f4;
+}
+
+/* ==========================
+   Thème VERT (steam-green)
+   => plus proche de l’ancien client
+   ========================== */
+.steam-green {
+    background-color: #2e3b2f; /* un vert-gris de fond */
+    color: #c0d0c0;
+    /* Police possible : font-family: Tahoma, sans-serif; */
+}
+
+.steam-green .card {
+    background-color: #3c4c3e;
+    border: 1px solid #111;
+    margin-bottom: 1rem;
+    color: #c0d0c0;
+}
+
+.steam-green .card-header {
+    background-color: #232e20;
+    color: #f3e005; /* vert clair */
+    font-weight: bold;
+}
+
+.steam-green .badge {
+    font-weight: normal;
+}
+
+.steam-green .table {
+    color: #c0d0c0;
+}
+
+.steam-green .table-secondary {
+    background-color: #3c4c3e !important;
+}
+
+.steam-green .list-group-item {
+    background-color: #3c4c3e;
+    border: none;
+}
+
+/* Liens, boutons, hover, etc. */
+.steam-green a,
+.steam-green .btn {
+    color: #8fbf8f;
+}
+.steam-green a:hover,
+.steam-green .btn:hover {
+    color: #ffffff;
+}
+
+/* Auto-refresh badge plus visible */
+.auto-refresh-badge {
+    background-color: #66c0f4;
+    color: #0b1014;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.steam-green .datacenters-table {
+    width: 100%;
+    background-color: #3c4c3e;
+    color: #cce0d5;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #111;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.steam-green .datacenters-table tbody tr.table-secondary td {
+    background-color: #2b3a2c !important; /* plus sombre que #3c4c3e */
+    color: #f3e005 !important;           /* jaune-vert vif */
+    font-weight: bold;
+}
+
+/* Zébrage pour les lignes paires */
+.steam-green .datacenters-table tbody tr:not(.table-secondary):nth-child(even) td {
+    background-color: #354435; /* un ton plus sombre que #3c4c3e */
+}
+
+.steam-green .datacenters-table th,
+.steam-green .datacenters-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #1b2c1f;
+}
+
+.steam-green .datacenters-table thead th {
+    background-color: #1b2c1f;
+    color: #f3e005;
+}

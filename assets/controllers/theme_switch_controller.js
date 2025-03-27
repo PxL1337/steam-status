@@ -13,7 +13,7 @@ export default class extends Controller {
             // S'il n'y a rien, on suppose "steam-blue" par défaut ou "steam-green"
             if (!this.element.classList.contains('steam-blue') &&
                 !this.element.classList.contains('steam-green')) {
-                this.element.classList.add('steam-blue');
+                this.element.classList.add('steam-green');
             }
         }
     }

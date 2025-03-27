@@ -87,6 +87,21 @@ html, body {
     color: #66c0f4;
 }
 
+/* Carte "service-status-card" pour steam-blue */
+.steam-blue .service-status-card {
+    background-color: #17212f;
+    border-radius: 6px;
+    color: #c7d5e0;
+}
+.steam-blue .service-status-card .card-header {
+    background-color: #0f161f;
+    color: #66c0f4;
+}
+.steam-blue .service-status-card .card-body {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
 /* ==========================
    Thème VERT (steam-green)
    => plus proche de l’ancien client
@@ -178,4 +193,62 @@ html, body {
 .steam-green .datacenters-table thead th {
     background-color: #1b2c1f;
     color: #f3e005;
+}
+
+/* Carte "service-status-card" pour steam-green */
+.steam-green .service-status-card {
+    background-color: #232e20;
+    border-radius: 6px;
+    color: #c0d0c0;
+}
+.steam-green .service-status-card .card-header {
+    background-color: #1a2418;
+    color: #f3e005;
+}
+.steam-green .service-status-card .card-body {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* ==========================
+   Thème général (steam)
+   ========================== */
+
+.load-idle {
+    background-color: #17a2b8;  /* un turquoise style Bootstrap “info” */
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.load-low {
+    background-color: #28a745; /* success */
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.load-medium {
+    background-color: #ffc107; /* warning */
+    color: #000;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.load-high {
+    background-color: #dc3545; /* danger */
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+
+.icon-gauge {
+    width: 20px;
+    height: 20px;
+    /*vertical-align: middle; !* ou top/middle selon le rendu souhaité *!*/
 }

@@ -41,7 +41,7 @@
                     <div class="row text-center mb-4">
                         <div class="col-md-6">
                             <p>
-                                <strong>Fetched at:</strong>
+                                <strong>Last update:</strong>
                                 {{ csgo.fetchedAt|date('D-M-Y H:i:s') }}
                             </p>
                         </div>
@@ -53,28 +53,43 @@
                         </div>
                     </div>
 
-                    <!-- Encart 2: Scheduler / SessionsLogon / SteamCommunity / Leaderboards en 2 colonnes -->
+                    <!-- Informations générales -->
                     <div class="row text-center">
-                        <div class="col-md-6">
-                            <p>
-                                <strong>Scheduler:</strong>
-                                {{ data.matchmaking.scheduler }}
-                            </p>
-                            <p>
-                                <strong>SessionsLogon:</strong>
-                                {{ data.services.SessionsLogon }}
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>
-                                <strong>SteamCommunity:</strong>
-                                {{ data.services.SteamCommunity }}
-                            </p>
-                            <p>
-                                <strong>Leaderboards:</strong>
-                                {{ data.services.Leaderboards }}
-                            </p>
-                        </div>
+                        {% for serviceName, serviceValue in {
+                            'Scheduler': data.matchmaking.scheduler,
+                            'SessionsLogon': data.services.SessionsLogon,
+                            'SteamCommunity': data.services.SteamCommunity,
+                            'Leaderboards': data.services.Leaderboards
+                        } %}
+                            <div class="col-md-6 mb-3">
+                                <div class="card service-status-card">
+                                    <div class="card-header">{{ serviceName }}</div>
+                                    <div class="card-body">
+                                        {% set statusClass = '' %}
+                                        {% set iconName = '' %}
+
+                                        {% if serviceValue in ['normal', 'online', 'full'] %}
+                                            {% set statusClass = 'load-low' %}
+                                            {% set iconName = 'prime:check-circle' %}
+                                        {% elseif serviceValue in ['partial'] %}
+                                            {% set statusClass = 'load-medium' %}
+                                            {% set iconName = 'iconoir:warning-circle' %}
+                                        {% elseif serviceValue in ['offline', 'high'] %}
+                                            {% set statusClass = 'load-high' %}
+                                            {% set iconName = 'line-md:close-circle' %}
+                                        {% else %}
+                                            {% set statusClass = 'load-idle' %}
+                                            {% set iconName = 'mingcute:sleep-fill' %}
+                                        {% endif %}
+
+                                        <span class="{{ statusClass }} d-inline-flex align-items-center">
+                        <twig:ux:icon name="{{ iconName }}" class="icon-gauge me-1"/>
+                        {{ serviceValue|capitalize }}
+                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
 
                 </div>

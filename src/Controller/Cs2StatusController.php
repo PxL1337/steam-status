@@ -91,6 +91,8 @@ final class Cs2StatusController extends AbstractController
         }
 
         // 4) Construire 4 charts distincts
+
+// --- chartServers ---
         $chartServers = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chartServers->setData([
             'labels' => $labels,
@@ -98,21 +100,38 @@ final class Cs2StatusController extends AbstractController
                 [
                     'label' => 'Online Servers (24h)',
                     'data' => $onlineServersData,
-                    'pointStyle' => 'line',
                     'borderColor' => 'rgb(75, 192, 192)',
                     'backgroundColor' => 'rgba(75, 192, 192, 0.1)',
+                    'fill' => true,
+                    'tension' => 0.4,                    // lissage
+                    'cubicInterpolationMode' => 'monotone', // interpolation monotone
                 ]
             ],
         ]);
         $chartServers->setOptions([
             'scales' => [
-                'y' => ['beginAtZero' => false],
+                'x' => [
+
+                    'time' => [
+                        'unit' => 'minute',         // ou 'hour', 'day'
+                        'displayFormats' => [
+                            'minute' => 'HH:mm',    // format d’affichage
+                        ],
+                    ],
+                ],
+                'y' => [
+                    'beginAtZero' => false
+                ],
             ],
             'plugins' => [
-                'legend' => ['display' => false], // masque la légende
+                'legend' => ['display' => false],
+            ],
+            'elements' => [
+                'point' => ['radius' => 0],
             ],
         ]);
 
+// --- chartPlayers ---
         $chartPlayers = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chartPlayers->setData([
             'labels' => $labels,
@@ -120,21 +139,37 @@ final class Cs2StatusController extends AbstractController
                 [
                     'label' => 'Online Players (24h)',
                     'data' => $onlinePlayersData,
-                    'pointStyle' => 'line',
                     'borderColor' => 'rgb(255, 99, 132)',
                     'backgroundColor' => 'rgba(255, 99, 132, 0.1)',
+                    'fill' => true,
+                    'tension' => 0.4,
+                    'cubicInterpolationMode' => 'monotone',
                 ]
             ],
         ]);
         $chartPlayers->setOptions([
             'scales' => [
-                'y' => ['beginAtZero' => false],
+                'x' => [
+                    'time' => [
+                        'unit' => 'hour',         // ou 'hour', 'day'
+                        'displayFormats' => [
+                            'hour' => 'HH:mm',    // format d’affichage
+                        ],
+                    ],
+                ],
+                'y' => [
+                    'beginAtZero' => false
+                ],
             ],
             'plugins' => [
-                'legend' => ['display' => false], // masque la légende
+                'legend' => ['display' => false],
+            ],
+            'elements' => [
+                'point' => ['radius' => 0],
             ],
         ]);
 
+// --- chartSearching ---
         $chartSearching = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chartSearching->setData([
             'labels' => $labels,
@@ -142,21 +177,37 @@ final class Cs2StatusController extends AbstractController
                 [
                     'label' => 'Searching Players (24h)',
                     'data' => $searchingPlayersData,
-                    'pointStyle' => 'line',
                     'borderColor' => 'rgb(120, 200, 120)',
                     'backgroundColor' => 'rgba(120, 200, 120, 0.1)',
+                    'fill' => true,
+                    'tension' => 0.4,
+                    'cubicInterpolationMode' => 'monotone',
                 ]
             ],
         ]);
         $chartSearching->setOptions([
             'scales' => [
-                'y' => ['beginAtZero' => false],
+                'x' => [
+                    'time' => [
+                        'unit' => 'hour',         // ou 'hour', 'day'
+                        'displayFormats' => [
+                            'hour' => 'HH:mm',    // format d’affichage
+                        ],
+                    ],
+                ],
+                'y' => [
+                    'beginAtZero' => false
+                ],
             ],
             'plugins' => [
-                'legend' => ['display' => false], // masque la légende
+                'legend' => ['display' => false],
+            ],
+            'elements' => [
+                'point' => ['radius' => 0],
             ],
         ]);
 
+// --- chartSearchAvg ---
         $chartSearchAvg = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chartSearchAvg->setData([
             'labels' => $labels,
@@ -164,18 +215,33 @@ final class Cs2StatusController extends AbstractController
                 [
                     'label' => 'Search Average (24h)',
                     'data' => $searchAverageData,
-                    'pointStyle' => 'line',
                     'borderColor' => 'rgb(200, 200, 120)',
                     'backgroundColor' => 'rgba(200, 200, 120, 0.1)',
+                    'fill' => true,
+                    'tension' => 0.4,
+                    'cubicInterpolationMode' => 'monotone',
                 ]
             ],
         ]);
         $chartSearchAvg->setOptions([
             'scales' => [
-                'y' => ['beginAtZero' => false],
+                'x' => [
+                    'time' => [
+                        'unit' => 'hour',         // ou 'hour', 'day'
+                        'displayFormats' => [
+                            'hour' => 'HH:mm',    // format d’affichage
+                        ],
+                    ],
+                ],
+                'y' => [
+                    'beginAtZero' => false
+                ],
             ],
             'plugins' => [
-                'legend' => ['display' => false], // masque la légende
+                'legend' => ['display' => false],
+            ],
+            'elements' => [
+                'point' => ['radius' => 0],
             ],
         ]);
 

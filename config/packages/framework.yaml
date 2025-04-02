@@ -8,6 +8,11 @@ framework:
     #esi: true
     #fragments: true
 
+    scheduler:
+        # The scheduler is used to schedule tasks to be executed in the background.
+        # It is not enabled by default, so you need to enable it explicitly.
+        enabled: true
+
 when@test:
     framework:
         test: true

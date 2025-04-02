@@ -1,0 +1,83 @@
+title: 'Statut de Counter-Strike 2'
+switch_theme: 'Changer de thème'
+refresh_in: 'Rafraîchissement dans'
+general_info: 'Informations générales'
+last_datas: 'Dernières données'
+app_version: 'Version de l’application'
+last_update: 'Mise à jour récente'
+no_change: 'Aucune'
+matchmaking: 'Matchmaking'
+online_players: 'Joueurs en ligne'
+online_servers: 'Serveurs en ligne'
+searching_players: 'Joueurs en recherche'
+search_avg: 'Temps de recherche moyen'
+datacenters_by_region: 'Datacenters (par région)'
+region_label: 'Région'
+capacity: 'Capacité'
+load: 'Charge'
+legal_mentions: 'Mentions légales'
+legal_disclaimer: >
+  Ce site n’est pas officiel et n’est pas affilié à Valve ou Steam.<br/>
+  Steam et le logo Steam sont des marques déposées ou enregistrées de Valve Corporation
+  aux États-Unis et/ou dans d'autres pays.
+status:
+  services:
+    Scheduler: 'Planificateur de Matchs'
+    SessionsLogon: 'Connexion des sessions'
+    SteamCommunity: 'Communauté Steam'
+    Leaderboards: 'Classements'
+  state:
+    normal: 'Normal'
+    partial: 'Partiel'
+    offline: 'Hors ligne'
+    online: 'En ligne'
+    full: 'Complète'
+    idle: 'Très faible'
+    low: 'Faible'
+    medium: 'Moyenne'
+    high: 'Élevée'
+    surge: 'Surcharge'
+    critical: 'Critique'
+    delayed: 'En attente'
+region:
+  Europe: 'Europe'
+  America: 'Amérique'
+  Asia: 'Asie'
+  Oceania: 'Océanie'
+  Africa: 'Afrique'
+  Others: 'Autres'
+version:
+  message_1: "🎉 Nouvelle version, même bug ?"
+  message_2: "🧪 Le patch note ? On l’a mangé."
+  message_3: "🚀 Encore plus loin (en théorie)."
+  message_4: "👻 Nouvelle version, anciens problèmes."
+  message_5: "🧹 On a fait le ménage… enfin, on a déplacé la poussière."
+  message_6: "💣 Cette version explose de nouveautés. Littéralement."
+  message_7: "🔧 Des bugs corrigés, d'autres générés. Cycle de la vie."
+  message_8: "📦 Mise à jour livrée avec amour (et sueur)."
+  message_9: "🎯 Nouveaux objectifs, même chaos."
+  message_10: "🕹️ Nouvelle version, mêmes galères ranked."
+  message_11: "🌪️ Le changelog s’est perdu dans une tornade."
+  message_12: "🐞 99 bugs corrigés, 100 nouveaux apparus."
+  message_13: "📈 Performance améliorée (dans les rêves)."
+  message_14: "🦄 Une mise à jour magique (on espère)."
+  message_15: "🧨 Le code sent encore la poudre."
+  message_16: "📻 Cette version capte mieux les ondes de rage."
+  message_17: "🧠 Plus intelligente. Ou pas. Testez et voyez."
+  message_18: "🔮 La prochaine sera encore meilleure. Peut-être."
+  message_19: "🦾 Mise à jour propulsée par IA… qui ne sait pas coder."
+  message_20: "🔥 Il paraît que celle-là ne crash pas. Il paraît…"
+random:
+  message_1: "🌍 Pendant que les serveurs dorment, moi je code."
+  message_2: "🚀 Optimisé pour aller vite. Sauf les matchs, bien sûr."
+  message_3: "💾 Sauvegardez vos données. Pas comme moi hier."
+  message_4: "👀 Toujours en ligne. Sauf quand je dors."
+  message_5: "🐧 Code testé sous Linux. Les bugs aussi."
+  message_6: "🍕 Ce projet a été alimenté par beaucoup de pizza."
+  message_7: "😎 Made with Symfony, parce que PHP c’est la vie."
+  message_8: "🔥 Ça marche chez moi ™️"
+  message_9: "🛠️ Si ça casse, c’est une feature."
+  message_10: "📊 Plus de stats que ton dernier DMG."
+credits:
+  title: "Conçu dans l'ombre par PxL7331 👾"
+  message: "Ce projet a été codé avec ❤️ par "

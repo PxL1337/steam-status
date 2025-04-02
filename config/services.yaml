@@ -25,5 +25,11 @@ services:
     App\Service\SteamStatusService:
         arguments:
             $steamApiKey: '%steam_api_key%'
+
+    App\EventSubscriber\LocaleSubscriber:
+        arguments:
+            $defaultLocale: 'en'
+            $supportedLocales: [ 'en', 'fr' ]
+        tags: [ 'kernel.event_subscriber' ]
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

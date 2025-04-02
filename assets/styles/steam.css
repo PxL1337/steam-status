@@ -245,6 +245,20 @@ html, body {
     border-radius: 4px;
     font-weight: 600;
 }
+.load-surge {
+    background-color: #ff8700; /* danger */
+    color: #000000;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+.load-critical {
+    background-color: #ff0018; /* danger */
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
 
 
 .icon-gauge {
@@ -252,3 +266,101 @@ html, body {
     height: 20px;
     /*vertical-align: middle; !* ou top/middle selon le rendu souhaité *!*/
 }
+
+.icon-gauge-large {
+    width: 40px;
+    height: 40px;
+    /*vertical-align: middle; !* ou top/middle selon le rendu souhaité *!*/
+}
+
+.futuristic-link {
+    display: inline-block;
+    color: #00f7ff;
+    font-weight: bold;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.futuristic-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, #00f7ff, #7afff0);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.futuristic-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.futuristic-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 5px #00f7ff, 0 0 10px #00f7ff;
+}
+
+.neon-link {
+    color: #0ff;
+    font-weight: bold;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    transition: all 0.4s ease;
+    text-shadow:
+            0 0 5px #0ff,
+            0 0 10px #0ff,
+            0 0 20px #0ff,
+            0 0 40px #0ff;
+    animation: glow-pulse 2s infinite ease-in-out;
+    perspective: 600px;
+}
+
+.neon-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #0ff;
+    bottom: -3px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease-in-out;
+}
+
+.neon-link:hover::after {
+    transform: scaleX(1);
+}
+
+.neon-link:hover {
+    transform: rotateX(5deg) rotateY(10deg);
+    text-shadow:
+            0 0 10px #0ff,
+            0 0 20px #0ff,
+            0 0 30px #0ff,
+            0 0 50px #0ff;
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        text-shadow:
+                0 0 5px #0ff,
+                0 0 10px #0ff,
+                0 0 20px #0ff,
+                0 0 40px #0ff;
+    }
+    50% {
+        text-shadow:
+                0 0 2px #0ff,
+                0 0 5px #0ff,
+                0 0 10px #0ff,
+                0 0 20px #0ff;
+    }
+}
+

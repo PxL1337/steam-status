@@ -11,7 +11,7 @@ class DatacenterRegions
 
         // Vérifie explicitement "australia" avant de tester "us" ou "atlanta"
         if (str_contains($dcName, 'australia')) {
-            return 'Océanie';
+            return 'Oceania';
         }
 
         if (
@@ -41,7 +41,7 @@ class DatacenterRegions
             str_contains($dcName, 'chile') ||
             str_contains($dcName, 'peru')
         ) {
-            return 'Amérique';
+            return 'America';
         }
 
         if (
@@ -52,13 +52,13 @@ class DatacenterRegions
             str_contains($dcName, 'hong kong') ||
             str_contains($dcName, 'india')
         ) {
-            return 'Asie';
+            return 'Asia';
         }
 
         if (str_contains($dcName, 'south africa')) {
-            return 'Afrique';
+            return 'Africa';
         }
 
-        return 'Autres';
+        return 'Others';
     }
 }

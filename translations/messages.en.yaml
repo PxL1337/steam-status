@@ -1,0 +1,84 @@
+title: 'Counter-Strike 2 Status'
+refresh_in: 'Refresh in'
+switch_theme: 'Switch Theme'
+general_info: 'General Information'
+last_datas: 'Last Datas'
+app_version: 'App Version'
+last_update: 'Recent Update'
+no_change: 'Nothing'
+matchmaking: 'Matchmaking'
+online_players: 'Online Players'
+online_servers: 'Online Servers'
+searching_players: 'Searching Players'
+search_avg: 'Search Average'
+datacenters_by_region: 'Datacenters (by region)'
+region_label: 'Region'
+capacity: 'Capacity'
+load: 'Load'
+legal_mentions: 'Legal Mentions'
+legal_disclaimer: >
+  This is an unofficial website and is not affiliated with Valve or Steam.<br/>
+  Steam and the Steam logo are trademarks and/or registered trademarks of Valve Corporation
+  in the U.S. and/or other countries.
+status:
+  services:
+    Scheduler: 'Match Scheduler'
+    SessionsLogon: 'Sessions Logon'
+    SteamCommunity: 'Steam Community'
+    Leaderboards: 'Leaderboards'
+  state:
+    normal: 'Normal'
+    partial: 'Partial'
+    offline: 'Offline'
+    online: 'Online'
+    full: 'Full'
+    idle: 'Idle'
+    low: 'Low'
+    medium: 'Medium'
+    high: 'High'
+    surge: 'Surge'
+    critical: 'Critical'
+    delayed: 'Delayed'
+region:
+  Europe: 'Europe'
+  America: 'America'
+  Asia: 'Asia'
+  Oceania: 'Oceania'
+  Africa: 'Africa'
+  Others: 'Others'
+version:
+  message_1: "🎉 New version, same bugs?"
+  message_2: "🧪 Patch notes? We ate them."
+  message_3: "🚀 Further... theoretically."
+  message_4: "👻 New version, old problems."
+  message_5: "🧹 We cleaned up... just moved the dust."
+  message_6: "💣 Explosive new features. Literally."
+  message_7: "🔧 Bugs fixed. New bugs introduced. Circle of life."
+  message_8: "📦 Delivered with love (and sweat)."
+  message_9: "🎯 New goals, same chaos."
+  message_10: "🕹️ New version, same ranked pain."
+  message_11: "🌪️ Changelog lost in a tornado."
+  message_12: "🐞 99 bugs fixed, 100 new ones born."
+  message_13: "📈 Improved performance (in dreams)."
+  message_14: "🦄 A magical update (hopefully)."
+  message_15: "🧨 The code still smells like gunpowder."
+  message_16: "📻 Better reception for rage waves."
+  message_17: "🧠 Smarter now. Or not. You tell us."
+  message_18: "🔮 The next one will be even better. Maybe."
+  message_19: "🦾 AI-powered... that can’t really code."
+  message_20: "🔥 This one doesn't crash. Allegedly."
+
+random:
+  message_1: "🌍 While servers sleep, I code."
+  message_2: "🚀 Optimized for speed. Not for matchmaking."
+  message_3: "💾 Backup your data. Unlike me yesterday."
+  message_4: "👀 Always online. Except when I’m not."
+  message_5: "🐧 Coded and tested on Linux. Bugs too."
+  message_6: "🍕 Fueled by lots of pizza."
+  message_7: "😎 Made with Symfony, because PHP is life."
+  message_8: "🔥 Works on my machine ™️"
+  message_9: "🛠️ If it breaks, it's a feature."
+  message_10: "📊 More stats than your last DMG."
+credits:
+  title: "Built in the Shadows by PxL7331 👾"
+  message: "This project was coded with ❤️ by "

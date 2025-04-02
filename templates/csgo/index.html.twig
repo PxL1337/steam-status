@@ -1,59 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CS2 Status{% endblock %}
+{% block title %}{{ 'title'|trans }}{% endblock %}
 
 {% block body %}
-
     <div class="steam-green"
          data-controller="auto-refresh theme-switch"
-         data-auto-refresh-interval-value="60"
-    >
-        <div class="container-fluid py-3">
-            <!-- Barre du haut : Titre, Switch Theme, auto-refresh -->
+         data-auto-refresh-interval-value="60">
+        <div class="container py-3">
+
+            <!-- Top bar -->
             <div class="row align-items-center mb-3">
                 <div class="col">
-                    <h1 class="mb-0">CS2 Status</h1>
+                    <h1 class="mb-0 d-flex align-items-center">
+                        <twig:ux:icon name="game-icons:target-shot" class="icon-gauge-large me-2"/>
+                        {{ 'title'|trans }}
+                    </h1>
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-sm btn-secondary"
-                            data-action="theme-switch#toggleTheme">
-                        Switch Theme
+                    <button class="btn btn-sm btn-secondary" data-action="theme-switch#toggleTheme">
+                        {{ 'switch_theme'|trans }}
                     </button>
                 </div>
                 <div class="col-auto">
-                    {# Indicateur auto-refresh plus visible #}
-                    <span class="text-white me-2" style="font-weight: bold;">
-                        Rafraîchissement dans
-                    </span>
+                    <span class="text-white me-2 fw-bold">{{ 'refresh_in'|trans }}</span>
                     <span class="auto-refresh-badge">
                         <span data-auto-refresh-target="countdown">60</span> s
                     </span>
                 </div>
             </div>
 
-
-            <!-- Carte “Informations générales” -->
+            <!-- General Info -->
             <div class="card mb-4">
-                <div class="card-header">Informations générales</div>
+                <div class="card-header d-flex align-items-center">
+                    <twig:ux:icon name="mdi:information-outline" class="icon-gauge me-2"/>
+                    {{ 'general_info'|trans }}
+                </div>
                 <div class="card-body">
-
-                    <!-- Encart 1: FetchedAt / AppVersion en 2 colonnes -->
                     <div class="row text-center mb-4">
-                        <div class="col-md-6">
-                            <p>
-                                <strong>Last update:</strong>
-                                {{ csgo.fetchedAt|date('D-M-Y H:i:s') }}
-                            </p>
+                        <div class="col-md-4">
+                            <div class="card service-status-card h-100">
+                                <div class="card-header d-flex align-items-center justify-content-center">
+                                    <twig:ux:icon name="mdi:clock-outline" class="icon-gauge me-1" />
+                                    {{ 'last_datas'|trans }}
+                                </div>
+                                <div class="card-body d-flex align-items-center justify-content-center flex-column text-center">
+                                    {{ formattedFetchedAt }}<br/>(CET/Paris)
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <p>
-                                <strong>App Version:</strong>
-                                {{ csgo.appVersion }}
-                            </p>
+                        <div class="col-md-4">
+                            <div class="card service-status-card h-100">
+                                <div class="card-header d-flex align-items-center justify-content-center">
+                                    <twig:ux:icon name="mdi:application" class="icon-gauge me-1" />
+                                    {{ 'app_version'|trans }}
+                                </div>
+                                <div class="card-body d-flex align-items-center justify-content-center flex-column text-center">
+                                    {{ csgo.appVersion }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card service-status-card h-100">
+                                <div class="card-header d-flex align-items-center justify-content-center">
+                                    <twig:ux:icon name="mdi:update" class="icon-gauge me-1" />
+                                    {{ 'last_update'|trans }}
+                                </div>
+                                <div class="card-body d-flex align-items-center justify-content-center flex-column text-center">
+                                    {% if versionChange %}
+                                        <div>{{ versionChange.old }} → {{ versionChange.new }}</div>
+                                        <div><small>{{ versionChange.date }}</small></div>
+                                        <div class="mt-1"><em>{{ versionChange.message }}</em></div>
+                                    {% else %}
+                                        <div>{{ 'no_change'|trans }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Informations générales -->
+                    <!-- Services -->
                     <div class="row text-center">
                         {% for serviceName, serviceValue in {
                             'Scheduler': data.matchmaking.scheduler,
@@ -63,7 +88,14 @@
                         } %}
                             <div class="col-md-6 mb-3">
                                 <div class="card service-status-card">
-                                    <div class="card-header">{{ serviceName }}</div>
+                                    <div class="card-header d-flex align-items-center justify-content-center">
+                                        {% if serviceName == 'Scheduler' %}
+                                            <twig:ux:icon name="mdi:calendar-clock" class="icon-gauge me-1" />
+                                        {% else %}
+                                            <twig:ux:icon name="mdi:steam" class="icon-gauge me-1" />
+                                        {% endif %}
+                                        {{ ('status.services.' ~ serviceName)|trans }}
+                                    </div>
                                     <div class="card-body">
                                         {% set statusClass = '' %}
                                         {% set iconName = '' %}
@@ -71,69 +103,76 @@
                                         {% if serviceValue in ['normal', 'online', 'full'] %}
                                             {% set statusClass = 'load-low' %}
                                             {% set iconName = 'prime:check-circle' %}
-                                        {% elseif serviceValue in ['partial'] %}
+                                        {% elseif serviceValue == 'partial' %}
                                             {% set statusClass = 'load-medium' %}
                                             {% set iconName = 'iconoir:warning-circle' %}
                                         {% elseif serviceValue in ['offline', 'high'] %}
                                             {% set statusClass = 'load-high' %}
                                             {% set iconName = 'line-md:close-circle' %}
+                                        {% elseif serviceValue == 'surge' %}
+                                            {% set statusClass = 'load-surge' %}
+                                            {% set iconName = 'mdi:alert-decagram' %}
+                                        {% elseif serviceValue == 'critical' %}
+                                            {% set statusClass = 'load-critical' %}
+                                            {% set iconName = 'mdi:alert-circle-outline' %}
+                                        {% elseif serviceValue == 'delayed' %}
+                                            {% set statusClass = 'load-surge' %}
+                                            {% set iconName = 'mdi:clock-alert-outline' %}
                                         {% else %}
                                             {% set statusClass = 'load-idle' %}
                                             {% set iconName = 'mingcute:sleep-fill' %}
                                         {% endif %}
 
                                         <span class="{{ statusClass }} d-inline-flex align-items-center">
-                        <twig:ux:icon name="{{ iconName }}" class="icon-gauge me-1"/>
-                        {{ serviceValue|capitalize }}
-                    </span>
+                                            <twig:ux:icon name="{{ iconName }}" class="icon-gauge me-1"/>
+                                            {{ ('status.state.' ~ serviceValue)|trans }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
-
                 </div>
             </div>
 
-            <!-- Carte Matchmaking: 2x2 => (Players | Servers), (Searching | Average) -->
+            <!-- Matchmaking -->
             <div class="card mb-4">
-                <div class="card-header">Matchmaking</div>
+                <div class="card-header d-flex align-items-center">
+                    <twig:ux:icon name="mdi:gamepad-variant-outline" class="icon-gauge me-2"/>
+                    {{ 'matchmaking'|trans }}
+                </div>
                 <div class="card-body">
-
                     <div class="row">
-                        <!-- top-left: Online Players -->
                         <div class="col-md-6 mb-4">
                             <h5 class="text-center">
-                                Online Players:
+                                <twig:ux:icon name="mdi:account-group-outline" class="icon-gauge me-1"/>
+                                {{ 'online_players'|trans }}:
                                 <strong>{{ data.matchmaking.online_players }}</strong>
                             </h5>
                             {{ render_chart(chartPlayers) }}
                         </div>
-
-                        <!-- top-right: Online Servers -->
                         <div class="col-md-6 mb-4">
                             <h5 class="text-center">
-                                Online Servers:
+                                <twig:ux:icon name="mdi:server" class="icon-gauge me-1"/>
+                                {{ 'online_servers'|trans }}:
                                 <strong>{{ data.matchmaking.online_servers }}</strong>
                             </h5>
                             {{ render_chart(chartServers) }}
                         </div>
                     </div>
-
                     <div class="row">
-                        <!-- bottom-left: Searching Players -->
                         <div class="col-md-6 mb-4">
                             <h5 class="text-center">
-                                Searching Players:
+                                <twig:ux:icon name="mdi:magnify-scan" class="icon-gauge me-1"/>
+                                {{ 'searching_players'|trans }}:
                                 <strong>{{ data.matchmaking.searching_players }}</strong>
                             </h5>
                             {{ render_chart(chartSearching) }}
                         </div>
-
-                        <!-- bottom-right: Search Average -->
                         <div class="col-md-6 mb-4">
                             <h5 class="text-center">
-                                Search Average:
+                                <twig:ux:icon name="mdi:timer-outline" class="icon-gauge me-1"/>
+                                {{ 'search_avg'|trans }}:
                                 <strong>{{ data.matchmaking.search_seconds_avg }}s</strong>
                             </h5>
                             {{ render_chart(chartSearchAvg) }}
@@ -142,87 +181,80 @@
                 </div>
             </div>
 
-            <!-- Datacenters (par région) -->
+            <!-- Datacenters -->
             <div class="card mb-4">
-                <div class="card-header">Datacenters (par région)</div>
+                <div class="card-header d-flex align-items-center">
+                    <twig:ux:icon name="mdi:map-marker-multiple-outline" class="icon-gauge me-2"/>
+                    {{ 'datacenters_by_region'|trans }}
+                </div>
                 <div class="card-body">
                     <table class="datacenters-table">
                         <thead>
                         <tr>
-                            <th>Region</th>
-                            <th>Capacity</th>
-                            <th>Load</th>
+                            <th><twig:ux:icon name="mdi:earth" class="icon-gauge me-1"/>{{ 'region_label'|trans }}</th>
+                            <th><twig:ux:icon name="mdi:server-network" class="icon-gauge me-1"/>{{ 'capacity'|trans }}</th>
+                            <th><twig:ux:icon name="line-md:gauge-twotone-loop" class="icon-gauge me-1"/>{{ 'load'|trans }}</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for regionName, datacenters in groupedDatacenters %}
+                        {% for regionCode, datacenters in groupedDatacenters %}
                             {% if datacenters is not empty %}
                                 <tr class="table-secondary">
                                     <td colspan="3">
-                                        <strong>{{ regionName }}</strong>
+                                        <strong>{{ regionLabels[regionCode]|trans }}</strong>
                                     </td>
                                 </tr>
                                 {% for dc in datacenters %}
                                     <tr>
                                         <td>
                                             {% if dc.flag %}
-                                                <span class="fi fi-{{ dc.flag }}" style="margin-right:6px;"></span>
+                                                <span class="fi fi-{{ dc.flag }}" style="margin-right:6px; width: 32px; height: 24px; border-radius: 4px; background-size: cover;"></span>
                                             {% endif %}
                                             {% if dc.city %}{{ dc.city }}{% else %}{{ dc.country }}{% endif %}
                                         </td>
-                                        {# Dans la colonne Capacity, on insère un <twig:ux:icon> selon la valeur #}
                                         <td>
-                                            {% if dc.capacity == 'full' %}
-                                                <span class="badge bg-success d-inline-flex align-items-center">
-                                                    <twig:ux:icon name="prime:check-circle" class="icon-gauge me-1" />
-                                                    Full
-                                                </span>
-                                            {% elseif dc.capacity == 'partial' %}
-                                                <span class="badge bg-warning text-dark d-inline-flex align-items-center">
-                                                    <twig:ux:icon name="line-md:warning-circle" class="icon-gauge me-1" />
-                                                    Partial
-                                                </span>
-                                            {% elseif dc.capacity %}
-                                                <span class="badge bg-dark d-inline-flex align-items-center">
-                                                    <twig:ux:icon name="line-md:question-circle" class="icon-gauge me-1" />
-                                                    {{ dc.capacity }}
-                                                </span>
-                                            {% else %}
-                                                <span class="badge bg-secondary d-inline-flex align-items-center">
-                                                    <twig:ux:icon name="line-md:question-circle" class="icon-gauge me-1" />
-                                                    N/A
-                                                </span>
-                                            {% endif %}
-                                        </td>
+                                            {% set capacity = dc.capacity ?? 'n/a' %}
+                                            {% set capLabel = ('status.state.' ~ capacity)|trans %}
+                                            {% set capColor = {
+                                                'full': 'success',
+                                                'partial': 'warning text-dark',
+                                                'offline': 'dark',
+                                                'n/a': 'secondary'
+                                            }[capacity] ?? 'dark' %}
 
+                                            {% set capIcon = {
+                                                'full': 'prime:check-circle',
+                                                'partial': 'line-md:warning-circle',
+                                                'offline': 'line-md:close-circle',
+                                                'n/a': 'line-md:question-circle'
+                                            }[capacity] ?? 'line-md:question-circle' %}
+                                            <span class="badge bg-{{ capColor }} d-inline-flex align-items-center">
+                                                <twig:ux:icon name="{{ capIcon }}" class="icon-gauge me-1" />
+                                                {{ capLabel }}
+                                            </span>
+                                        </td>
                                         <td>
-                                            {# load (Idle, Low, Medium, High) => icônes line-md #}
-                                            {% if dc.load == 'idle' %}
-                                                <span class="badge bg-info d-inline-flex align-items-center">
-                                                <twig:ux:icon name="line-md:gauge-empty" class="icon-gauge me-1" />
-                                                Idle
+                                            {% set load = dc.load ?? 'n/a' %}
+                                            {% set loadLabel = ('status.state.' ~ load)|trans %}
+                                            {% set loadColor = {
+                                                'idle': 'info',
+                                                'low': 'success',
+                                                'medium': 'warning text-dark',
+                                                'high': 'danger',
+                                                'full': 'dark'
+                                            }[load] ?? 'secondary' %}
+
+                                            {% set loadIcon = {
+                                                'idle': 'line-md:gauge-empty',
+                                                'low': 'line-md:gauge-low',
+                                                'medium': 'line-md:gauge',
+                                                'high': 'line-md:gauge-full',
+                                                'full': 'solar:danger-triangle-outline'
+                                            }[load] ?? 'line-md:gauge' %}
+                                            <span class="badge bg-{{ loadColor }} d-inline-flex align-items-center">
+                                                <twig:ux:icon name="{{ loadIcon }}" class="icon-gauge me-1" />
+                                                {{ loadLabel }}
                                             </span>
-                                            {% elseif dc.load == 'low' %}
-                                                <span class="badge bg-success d-inline-flex align-items-center">
-                                                <twig:ux:icon name="line-md:gauge-low" class="icon-gauge me-1" />
-                                                Low
-                                            </span>
-                                            {% elseif dc.load == 'medium' %}
-                                                <span class="badge bg-warning text-dark d-inline-flex align-items-center">
-                                                <twig:ux:icon name="line-md:gauge" class="icon-gauge me-1" />
-                                                Medium
-                                            </span>
-                                            {% elseif dc.load == 'high' %}
-                                                <span class="badge bg-danger d-inline-flex align-items-center">
-                                                <twig:ux:icon name="line-md:gauge-full" class="icon-gauge me-1" />
-                                                High
-                                            </span>
-                                            {% else %}
-                                                <span class="badge bg-secondary d-inline-flex align-items-center">
-                                                <twig:ux:icon name="line-md:gauge" class="icon-gauge me-1" />
-                                                {{ dc.load }}
-                                            </span>
-                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -230,6 +262,44 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <twig:ux:icon name="mdi:emoticon-wink-outline" class="icon-gauge me-2"/>
+                            {{ 'credits.title'|trans }}
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3">
+                                {{ 'credits.message'|trans }}
+                                <a href="https://github.com/PxL1337" target="_blank" class="neon-link">
+                                    PxL7331
+                                </a>.
+                            </p>
+                            <p class="fst-italic mb-0">
+                                {{ randomMessage }}
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <twig:ux:icon name="mdi:alert-circle-outline" class="icon-gauge me-2"/>
+                            {{ 'legal_mentions'|trans }}
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-0">
+                                {{ 'legal_disclaimer'|trans|raw }}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 

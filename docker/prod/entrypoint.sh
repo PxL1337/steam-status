@@ -7,6 +7,9 @@ echo "🏁 Lancement de l'application Steam Status..."
 # Installation des dépendances (si nécessaire)
 composer install --no-interaction --prefer-dist --optimize-autoloader
 
+# Compilation des assets
+php bin/console asset-map:compile --no-interaction
+
 # Création de la base si elle n'existe pas
 php bin/console doctrine:database:create --if-not-exists || true
 

@@ -26,7 +26,7 @@ Application Symfony permettant de visualiser en temps réel l’état de Counter
   - Serveurs en ligne
   - Joueurs en matchmaking
   - Temps de recherche moyen
-- Carte des régions avec charge et capacité des serveurs
+- Liste des régions avec charge et capacité des serveurs
 
 ---
 

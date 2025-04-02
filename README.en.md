@@ -26,7 +26,7 @@ Symfony application to monitor real-time data about Counter-Strike 2: version in
   - Online servers
   - Players searching
   - Average matchmaking time
-- Region map with server load & capacity
+- Region list with server load & capacity
 
 ---
 

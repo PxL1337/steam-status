@@ -8,6 +8,7 @@
 ![Chart.js](https://img.shields.io/badge/Chart.js-UX-red?logo=chartdotjs)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple?logo=bootstrap)
 ![License: Custom](https://img.shields.io/badge/License-Custom-lightgrey)
+[![Docker Hub](https://img.shields.io/docker/pulls/valpxl/steam-status?label=Docker%20Hub)](https://hub.docker.com/r/valpxl/steam-status)
 
 Symfony application to monitor real-time data about Counter-Strike 2: version info, service status, player & server stats, and global server load per region.
 
@@ -46,15 +47,15 @@ Symfony application to monitor real-time data about Counter-Strike 2: version in
 
 ### General Informations
 
-![General Informations](Docs/Assets/Readme/EN/General_Informations.png)
+![General Informations](https://raw.githubusercontent.com/PxL1337/steam-status/master/Docs/Assets/Readme/EN/General_Informations.png)
 
 ### Matchmaking Status
 
-![Matchmaking](Docs/Assets/Readme/EN/Matchmaking.png)
+![Matchmaking](https://raw.githubusercontent.com/PxL1337/steam-status/master/Docs/Assets/Readme/EN/Matchmaking.png)
 
 ### Datacenter Map
 
-![Datacenters](Docs/Assets/Readme/EN/Datacenters.png)
+![Datacenters](https://raw.githubusercontent.com/PxL1337/steam-status/master/Docs/Assets/Readme/EN/Datacenters.png)
 
 ---
 
@@ -90,6 +91,22 @@ STEAM_API_KEY=your_steam_api_key
 
 - Import `docker-compose.prod.yml` into Portainer
 - Use YunoHost Redirect app to forward your domain to `http://127.0.0.1:<port>`
+
+---
+
+## 📦 Using Make
+
+To simplify local or server usage:
+
+```bash
+make up        # Start app with built-in DB
+make up-ext    # Start with external DB
+make build     # Rebuild containers
+make down      # Stop containers
+make clean     # Remove volumes & containers
+make bash      # Enter the app container
+make help      # List available commands
+```
 
 ---
 

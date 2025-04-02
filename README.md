@@ -8,6 +8,7 @@
 ![Chart.js](https://img.shields.io/badge/Chart.js-UX-red?logo=chartdotjs)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple?logo=bootstrap)
 ![License: Custom](https://img.shields.io/badge/License-Custom-lightgrey)
+[![Docker Hub](https://img.shields.io/docker/pulls/valpxl/steam-status?label=Docker%20Hub)](https://hub.docker.com/r/valpxl/steam-status)
 
 Application Symfony permettant de visualiser en temps réel l’état de Counter-Strike 2 : version, services, joueurs, serveurs et charge réseau mondiale.
 
@@ -47,15 +48,15 @@ Application Symfony permettant de visualiser en temps réel l’état de Counter
 
 ### Informations générales
 
-![Informations générales](Docs/Assets/Readme/FR/Informations_générales.png)
+![Informations générales](https://raw.githubusercontent.com/PxL1337/steam-status/master/Docs/Assets/Readme/FR/Informations_générales.png)
 
 ### État du matchmaking
 
-![Matchmaking](Docs/Assets/Readme/FR/Matchmaking.png)
+![Matchmaking](https://raw.githubusercontent.com/PxL1337/steam-status/master/Docs/Assets/Readme/FR/Matchmaking.png)
 
 ### Carte des datacenters
 
-![Datacenters](Docs/Assets/Readme/FR/Datacenters.png)
+![Datacenters](https://raw.githubusercontent.com/PxL1337/steam-status/master/Docs/Assets/Readme/FR/Datacenters.png)
 
 ---
 
@@ -92,6 +93,21 @@ STEAM_API_KEY=your_steam_api_key
 - Importez `docker-compose.prod.yml` dans Portainer
 - Redirigez un domaine avec l’app `Redirect` vers `http://127.0.0.1:<port>`
 
+---
+
+## 📦 Utilisation avec Make
+
+Pour simplifier l'utilisation en local ou sur un serveur :
+
+```bash
+make up        # Lancer l'application avec base intégrée
+make up-ext    # Lancer avec base externe
+make build     # Rebuild les conteneurs
+make down      # Stopper les conteneurs
+make clean     # Supprimer volumes & conteneurs
+make bash      # Entrer dans le conteneur
+make help      # Affiche la liste des commandes disponibles
+```
 ---
 
 ## 🧵 Worker Symfony Messenger

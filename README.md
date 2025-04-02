@@ -59,9 +59,45 @@ Application Symfony permettant de visualiser en temps réel l’état de Counter
 
 ---
 
-## 🚧 Déploiement
+## 🚀 Déploiement Docker
 
-Projet en cours de développement. Un déploiement Docker est prévu dans une version future.
+### 1. Mode standalone (local ou public)
+
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+```
+
+- Accès par défaut : `http://localhost:8080`
+- Variables d’environnement :
+  - `STEAM_API_KEY`
+  - `PORT` (facultatif, 8080 par défaut)
+- La base de données est persistée.
+- Les migrations Doctrine sont appliquées automatiquement.
+
+### 2. Base de données externe
+
+```bash
+docker compose -f docker-compose.external-db.yml up --build -d
+```
+
+Exemple `.env` :
+
+```dotenv
+DATABASE_URL=pgsql://user:pass@host:5432/dbname?serverVersion=15
+STEAM_API_KEY=your_steam_api_key
+```
+
+### 3. Déploiement via Portainer (YunoHost)
+
+- Importez `docker-compose.prod.yml` dans Portainer
+- Redirigez un domaine avec l’app `Redirect` vers `http://127.0.0.1:<port>`
+
+---
+
+## 🧵 Worker Symfony Messenger
+
+La file `scheduler_default` est automatiquement consommée via `supervisord`.  
+Elle exécute `app:update-steam-status` toutes les minutes.
 
 ---
 

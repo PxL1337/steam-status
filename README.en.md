@@ -58,9 +58,45 @@ Symfony application to monitor real-time data about Counter-Strike 2: version in
 
 ---
 
-## 🚧 Deployment
+## 🚀 Docker Deployment
 
-This project is still in development. Docker deployment coming soon.
+### 1. Standalone (local or public)
+
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+```
+
+- Default access: `http://localhost:8080`
+- Environment variables:
+  - `STEAM_API_KEY`
+  - `PORT` (optional, default is 8080)
+- Database is persisted
+- Doctrine migrations run automatically
+
+### 2. With external database
+
+```bash
+docker compose -f docker-compose.external-db.yml up --build -d
+```
+
+Example `.env`:
+
+```dotenv
+DATABASE_URL=pgsql://user:pass@host:5432/dbname?serverVersion=15
+STEAM_API_KEY=your_steam_api_key
+```
+
+### 3. Portainer / YunoHost Deployment
+
+- Import `docker-compose.prod.yml` into Portainer
+- Use YunoHost Redirect app to forward your domain to `http://127.0.0.1:<port>`
+
+---
+
+## 🧵 Messenger Worker
+
+The `scheduler_default` queue is automatically consumed using `supervisord`.  
+It runs `app:update-steam-status` every minute.
 
 ---
 

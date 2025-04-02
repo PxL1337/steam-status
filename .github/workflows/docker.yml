@@ -2,7 +2,7 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -27,3 +27,11 @@ jobs:
           context: .
           push: true
           tags: valpxl/steam-status:latest
+
+      - name: Update Docker Hub README
+          uses: peter-evans/dockerhub-description@v3
+          with:
+            username: valpxl
+            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+            repository: valpxl/steam-status
+            readme-filepath: ./README.md

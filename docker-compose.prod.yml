@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  app:
+    image: valpxl/steam-status:latest
+    container_name: steam-status-app
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      STEAM_API_KEY: "${STEAM_API_KEY}"
+      DATABASE_URL: "pgsql://symfony:symfony@postgres:5432/symfony?serverVersion=15"
+    volumes:
+      - ./docker/prod/entrypoint.sh:/entrypoint.sh
+      - .:/var/www/html
+    entrypoint: ["sh", "/entrypoint.sh"]
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: steam-status-db
+    environment:
+      POSTGRES_DB: symfony
+      POSTGRES_USER: symfony
+      POSTGRES_PASSWORD: symfony
+    volumes:
+      - steamstatus_pgdata:/var/lib/postgresql/data
+
+volumes:
+  steamstatus_pgdata:

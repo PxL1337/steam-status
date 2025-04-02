@@ -15,6 +15,8 @@ Symfony application to monitor real-time data about Counter-Strike 2: version in
 
 ## 🎮 Features
 
+- Automatic data refresh
+- Two themes: Old Steam and Current Steam
 - Current CS2 version and update detection (within 24h)
 - Steam/CS2 service status:
   - Matchmaking

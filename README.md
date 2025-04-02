@@ -15,6 +15,8 @@ Application Symfony permettant de visualiser en temps réel l’état de Counter
 
 ## 🎮 Fonctionnalités
 
+- Rafraîchissement automatique des données
+- Deux thèmes : Ancien Steam et Steam Actuel
 - Version actuelle de CS2 et détection des mises à jour < 24h
 - Statut des services Steam/CS2 :
   - Matchmaking

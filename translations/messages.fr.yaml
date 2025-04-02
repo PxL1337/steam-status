@@ -23,7 +23,7 @@ legal_disclaimer: >
 status:
   services:
     Scheduler: 'Planificateur de Matchs'
-    SessionsLogon: 'Connexion des sessions'
+    SessionsLogon: 'Gestionnaire de sessions'
     SteamCommunity: 'Communauté Steam'
     Leaderboards: 'Classements'
   state:

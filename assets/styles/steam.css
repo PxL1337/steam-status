@@ -364,3 +364,36 @@ html, body {
     }
 }
 
+/* ==========================
+   BETA badge
+   ========================== */
+.beta-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: white;
+    letter-spacing: 1px;
+    box-shadow: 0 0 8px rgba(255, 75, 43, 0.6);
+    transition: all 0.3s ease-in-out;
+    animation: beta-flicker 2.5s infinite ease-in-out;
+    cursor: default;
+}
+
+@keyframes beta-flicker {
+    0%, 100% {
+        text-shadow: 0 0 2px white, 0 0 4px #ff4b2b, 0 0 6px #ff416c;
+    }
+    50% {
+        text-shadow: 0 0 4px white, 0 0 8px #ff4b2b, 0 0 12px #ff416c;
+    }
+}
+
+.beta-badge:hover {
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(255, 75, 43, 0.8);
+}

@@ -11,10 +11,12 @@
             <!-- Top bar -->
             <div class="row align-items-center mb-3">
                 <div class="col">
-                    <h1 class="mb-0 d-flex align-items-center">
-                        <twig:ux:icon name="game-icons:target-shot" class="icon-gauge-large me-2"/>
-                        {{ 'title'|trans }}
+                    <h1 class="mb-0 d-flex align-items-center gap-2">
+                        <twig:ux:icon name="game-icons:target-shot" class="icon-gauge-large" />
+                        <span>{{ 'title'|trans }}</span>
+                        <span class="beta-badge">BETA</span>
                     </h1>
+
                 </div>
                 <div class="col-auto">
                     <button class="btn btn-sm btn-secondary" data-action="theme-switch#toggleTheme">

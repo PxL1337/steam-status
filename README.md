@@ -2,8 +2,8 @@
 
 > 🇬🇧 Looking for the English version? [Click here](README.en.md)
 
-![Symfony](https://img.shields.io/badge/Symfony-6.x-black?logo=symfony)
-![PHP](https://img.shields.io/badge/PHP-8.2-blue?logo=php)
+![Symfony](https://img.shields.io/badge/Symfony-7.x-black?logo=symfony)
+![PHP](https://img.shields.io/badge/PHP-8.3-blue?logo=php)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql)
 ![Chart.js](https://img.shields.io/badge/Chart.js-UX-red?logo=chartdotjs)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple?logo=bootstrap)
@@ -32,7 +32,8 @@ Application Symfony permettant de visualiser en temps réel l’état de Counter
 
 ## ⚙️ Stack technique
 
-- **Symfony 6.x**
+- **PHP 8.3**
+- **Symfony 7.x**
 - **PostgreSQL**
 - **Twig & Bootstrap**
 - **Symfony UX Turbo, Chart.js, Icons**

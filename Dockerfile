@@ -20,7 +20,8 @@ COPY . .
 
 # Install PHP & JS dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-RUN npm install && npm run build
+RUN npm install
+RUN npm run build
 
 # Entrypoint
 COPY docker/prod/entrypoint.sh /entrypoint.sh

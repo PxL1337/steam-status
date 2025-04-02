@@ -11,6 +11,6 @@ import { Controller } from '@hotwired/stimulus';
  */
 export default class extends Controller {
     connect() {
-        console.log('HelloController is connected! element =', this.element);
+        console.log('Hello Friend...');
     }
 }

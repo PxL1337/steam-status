@@ -8,7 +8,7 @@ services:
       - "${PORT:-8080}:8080"
     environment:
       STEAM_API_KEY: "${STEAM_API_KEY}"
-      DATABASE_URL: "pgsql://symfony:symfony@postgres:5432/symfony?serverVersion=15"
+      DATABASE_URL: "postgresql://symfony:symfony@postgres:5432/symfony?serverVersion=15&charset=utf8"
     entrypoint: ["sh", "/entrypoint.sh"]
     depends_on:
       - postgres

@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: steam-status-app
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      DATABASE_URL: "pgsql://symfony:symfony@postgres:5432/symfony?serverVersion=15"
+      STEAM_API_KEY: "${STEAM_API_KEY}"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/var/www/html
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: steam-status-db
+    environment:
+      POSTGRES_DB: symfony
+      POSTGRES_USER: symfony
+      POSTGRES_PASSWORD: symfony
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

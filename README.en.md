@@ -61,51 +61,122 @@ Symfony application to monitor real-time data about Counter-Strike 2: version in
 
 ## 🚀 Docker Deployment
 
-### 1. Standalone (local or public)
-
-```bash
-docker compose -f docker-compose.prod.yml up --build -d
-```
-
-- Default access: `http://localhost:8080`
-- Environment variables:
-  - `STEAM_API_KEY`
-  - `PORT` (optional, default is 8080)
-- Database is persisted
-- Doctrine migrations run automatically
-
-### 2. With external database
-
-```bash
-docker compose -f docker-compose.external-db.yml up --build -d
-```
-
-Example `.env`:
-
-```dotenv
-DATABASE_URL=pgsql://user:pass@host:5432/dbname?serverVersion=15
-STEAM_API_KEY=your_steam_api_key
-```
-
-### 3. Portainer / YunoHost Deployment
-
-- Import `docker-compose.prod.yml` into Portainer
-- Use YunoHost Redirect app to forward your domain to `http://127.0.0.1:<port>`
+The application can be deployed in two modes:
+1. With an integrated PostgreSQL database
+2. With an external PostgreSQL database
 
 ---
 
-## 📦 Using Make
+### 🧩 1. With Integrated Database
 
-To simplify local or server usage:
+#### ✅ Using `docker run`
 
 ```bash
-make up        # Start app with built-in DB
-make up-ext    # Start with external DB
-make build     # Rebuild containers
-make down      # Stop containers
-make clean     # Remove volumes & containers
-make bash      # Enter the app container
-make help      # List available commands
+docker run -d \
+  -e STEAM_API_KEY=your_steam_api_key \
+  -p 8080:8080 \
+  valpxl/steam-status:latest
+```
+
+- Environment variables:
+  - **Required**: `STEAM_API_KEY`
+  - **Optional**: `PORT` (through `-p <host>:8080`)
+
+#### ✅ Using `docker-compose` (Portainer or CLI)
+
+##### 📌 Example stack for **Portainer**:
+
+```yaml
+services:
+  app:
+    image: valpxl/steam-status:latest
+    container_name: steam-status-app
+    ports:
+      - "${PORT:-46001}:8080"
+    environment:
+      STEAM_API_KEY: "${STEAM_API_KEY}"
+      DATABASE_URL: "postgresql://symfony:symfony@postgres:5432/symfony?serverVersion=15&charset=utf8"
+    entrypoint: ["sh", "/entrypoint.sh"]
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: steam-status-db
+    environment:
+      POSTGRES_DB: symfony
+      POSTGRES_USER: symfony
+      POSTGRES_PASSWORD: symfony
+    volumes:
+      - steamstatus_pgdata:/var/lib/postgresql/data
+
+volumes:
+  steamstatus_pgdata:
+```
+
+➡️ Set the `STEAM_API_KEY` and `PORT` values directly in Portainer.
+
+##### 🖥️ For `docker compose` via CLI:
+
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+➡️ **Important**: update the values in a `.env` file at the root of the project.
+
+---
+
+### 🌐 2. With External Database
+
+#### ✅ Using `docker run`
+
+```bash
+docker run -d \
+  -e STEAM_API_KEY=your_steam_api_key \
+  -e DATABASE_URL=postgresql://user:pass@host:port/dbname?serverVersion=15&charset=utf8 \
+  -p 8080:8080 \
+  valpxl/steam-status:latest
+```
+
+- Environment variables:
+  - **Required**: `STEAM_API_KEY`
+  - **Required**: `DATABASE_URL`
+  - **Optional**: `PORT` (through `-p <host>:8080`)
+
+#### ✅ Using `docker-compose` (Portainer or CLI)
+
+##### 📌 Example stack for **Portainer**:
+
+```yaml
+services:
+  app:
+    image: valpxl/steam-status:latest
+    container_name: steam-status-app
+    ports:
+      - "${PORT:-46001}:8080"
+    environment:
+      DATABASE_URL: "${DATABASE_URL}"
+      STEAM_API_KEY: "${STEAM_API_KEY}"
+
+    entrypoint: ["sh", "/entrypoint.sh"]
+```
+
+➡️ Set the `STEAM_API_KEY`, `DATABASE_URL` and `PORT` values directly in Portainer.
+
+##### 🖥️ For `docker compose` via CLI:
+
+```bash
+docker compose -f docker-compose.prod.external-db.yml up -d
+```
+
+➡️ **Important**: update the values of `DATABASE_URL` and `STEAM_API_KEY` in a `.env` file at the root of the project.
+
+- Example `.env`:
+
+```dotenv
+STEAM_API_KEY=your_steam_api_key
+DATABASE_URL=postgresql://user:pass@host:5432/dbname?serverVersion=15&charset=utf8
+PORT=8080
 ```
 
 ---

@@ -62,52 +62,124 @@ Application Symfony permettant de visualiser en temps réel l’état de Counter
 
 ## 🚀 Déploiement Docker
 
-### 1. Mode standalone (local ou public)
-
-```bash
-docker compose -f docker-compose.prod.yml up --build -d
-```
-
-- Accès par défaut : `http://localhost:8080`
-- Variables d’environnement :
-  - `STEAM_API_KEY`
-  - `PORT` (facultatif, 8080 par défaut)
-- La base de données est persistée.
-- Les migrations Doctrine sont appliquées automatiquement.
-
-### 2. Base de données externe
-
-```bash
-docker compose -f docker-compose.external-db.yml up --build -d
-```
-
-Exemple `.env` :
-
-```dotenv
-DATABASE_URL=pgsql://user:pass@host:5432/dbname?serverVersion=15
-STEAM_API_KEY=your_steam_api_key
-```
-
-### 3. Déploiement via Portainer (YunoHost)
-
-- Importez `docker-compose.prod.yml` dans Portainer
-- Redirigez un domaine avec l’app `Redirect` vers `http://127.0.0.1:<port>`
+L'application peut être déployée en deux variantes :
+1. Avec base de données intégrée (PostgreSQL dans le conteneur)
+2. Avec une base de données externe (PostgreSQL déjà disponible sur un autre hôte)
 
 ---
 
-## 📦 Utilisation avec Make
+### 🧩 1. Version avec base de données intégrée
 
-Pour simplifier l'utilisation en local ou sur un serveur :
+#### ✅ Via `docker run`
 
 ```bash
-make up        # Lancer l'application avec base intégrée
-make up-ext    # Lancer avec base externe
-make build     # Rebuild les conteneurs
-make down      # Stopper les conteneurs
-make clean     # Supprimer volumes & conteneurs
-make bash      # Entrer dans le conteneur
-make help      # Affiche la liste des commandes disponibles
+docker run -d \
+  -e STEAM_API_KEY=your_steam_api_key \
+  -p 8080:8080 \
+  valpxl/steam-status:latest
 ```
+
+- Variables d’environnement :
+  - **Obligatoire** : `STEAM_API_KEY`
+  - **Optionnelle** : `PORT` (via `-p <host>:8080`)
+
+#### ✅ Via `docker-compose` (Portainer ou ligne de commande)
+
+##### 📌 Exemple de stack pour **Portainer** :
+
+```yaml
+services:
+  app:
+    image: valpxl/steam-status:latest
+    container_name: steam-status-app
+    ports:
+      - "${PORT:-46001}:8080"
+    environment:
+      STEAM_API_KEY: "${STEAM_API_KEY}"
+      DATABASE_URL: "postgresql://symfony:symfony@postgres:5432/symfony?serverVersion=15&charset=utf8"
+    entrypoint: ["sh", "/entrypoint.sh"]
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: steam-status-db
+    environment:
+      POSTGRES_DB: symfony
+      POSTGRES_USER: symfony
+      POSTGRES_PASSWORD: symfony
+    volumes:
+      - steamstatus_pgdata:/var/lib/postgresql/data
+
+volumes:
+  steamstatus_pgdata:
+```
+
+➡️ Pensez à configurer les variables `STEAM_API_KEY` et `PORT` dans l’interface Portainer.
+
+##### 🖥️ Pour `docker compose` en ligne de commande :
+
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+➡️ **Important** : modifiez les variables dans un fichier `.env` à la racine du projet.
+
+---
+
+### 🌐 2. Version avec base de données externe
+
+#### ✅ Via `docker run`
+
+```bash
+docker run -d \
+  -e STEAM_API_KEY=your_steam_api_key \
+  -e DATABASE_URL=postgresql://user:pass@host:port/dbname?serverVersion=15&charset=utf8 \
+  -p 8080:8080 \
+  valpxl/steam-status:latest
+```
+
+- Variables d’environnement :
+  - **Obligatoire** : `STEAM_API_KEY`
+  - **Obligatoire** : `DATABASE_URL`
+  - **Optionnelle** : `PORT` (via `-p <host>:8080`)
+
+#### ✅ Via `docker-compose` (Portainer ou ligne de commande)
+
+##### 📌 Exemple de stack pour **Portainer** :
+
+```yaml
+services:
+  app:
+    image: valpxl/steam-status:latest
+    container_name: steam-status-app
+    ports:
+      - "${PORT:-46001}:8080"
+    environment:
+      DATABASE_URL: "${DATABASE_URL}"
+      STEAM_API_KEY: "${STEAM_API_KEY}"
+
+    entrypoint: ["sh", "/entrypoint.sh"]
+```
+
+➡️ Pensez à configurer les variables `STEAM_API_KEY`, `DATABASE_URL` et `PORT`(optionnel) dans l’interface Portainer.
+
+##### 🖥️ Pour `docker compose` en ligne de commande :
+
+```bash
+docker compose -f docker-compose.prod.external-db.yml up -d
+```
+
+➡️ **Important** : modifiez les variables `STEAM_API_KEY`, `DATABASE_URL` et `PORT`(optionnel) dans un fichier `.env` à la racine du projet.
+
+- Exemple `.env` :
+
+```dotenv
+STEAM_API_KEY=your_steam_api_key
+DATABASE_URL=postgresql://user:pass@host:5432/dbname?serverVersion=15&charset=utf8
+PORT=8080
+```
+
 ---
 
 ## 🧵 Worker Symfony Messenger

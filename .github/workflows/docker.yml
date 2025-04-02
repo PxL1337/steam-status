@@ -34,4 +34,4 @@ jobs:
           username: valpxl
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: valpxl/steam-status
-          readme-filepath: ./README.md
+          readme-filepath: ./README.en.md

@@ -1,6 +1,6 @@
 # Steam Status — Counter-Strike 2 Monitor
 
-> 🇫🇷 Vous cherchez la version française ? [Cliquez ici](README.md)
+> 🇫🇷 Vous cherchez la version française ? [Cliquez ici](https://raw.githubusercontent.com/PxL1337/steam-status/master/README.md)
 
 ![Symfony](https://img.shields.io/badge/Symfony-6.x-black?logo=symfony)
 ![PHP](https://img.shields.io/badge/PHP-8.2-blue?logo=php)

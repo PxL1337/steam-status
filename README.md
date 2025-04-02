@@ -1,6 +1,6 @@
 # Steam Status — Counter-Strike 2 Monitor
 
-> 🇬🇧 Looking for the English version? [Click here](README.en.md)
+> EN Looking for the English version? [Click here](README.en.md)
 
 ![Symfony](https://img.shields.io/badge/Symfony-7.x-black?logo=symfony)
 ![PHP](https://img.shields.io/badge/PHP-8.3-blue?logo=php)

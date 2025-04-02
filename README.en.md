@@ -44,7 +44,7 @@ Symfony application to monitor real-time data about Counter-Strike 2: version in
 
 ### General Informations
 
-![General Informations](Docs/Assets/Readme/EN/General Informations.png)
+![General Informations](Docs/Assets/Readme/EN/General_Informations.png)
 
 ### Matchmaking Status
 

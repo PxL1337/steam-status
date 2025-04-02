@@ -45,7 +45,7 @@ Application Symfony permettant de visualiser en temps réel l’état de Counter
 
 ### Informations générales
 
-![Informations générales](Docs/Assets/Readme/FR/Informations générales.png)
+![Informations générales](Docs/Assets/Readme/FR/Informations_générales.png)
 
 ### État du matchmaking
 

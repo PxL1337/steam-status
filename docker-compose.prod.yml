@@ -10,7 +10,6 @@ services:
       STEAM_API_KEY: "${STEAM_API_KEY}"
       DATABASE_URL: "pgsql://symfony:symfony@postgres:5432/symfony?serverVersion=15"
     volumes:
-      - ./docker/prod/entrypoint.sh:/entrypoint.sh
       - .:/var/www/html
     entrypoint: ["sh", "/entrypoint.sh"]
     depends_on:

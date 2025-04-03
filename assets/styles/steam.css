@@ -273,6 +273,12 @@ html, body {
     /*vertical-align: middle; !* ou top/middle selon le rendu souhaité *!*/
 }
 
+.icon-gauge-small {
+    width: 15px;
+    height: 15px;
+    /*vertical-align: middle; !* ou top/middle selon le rendu souhaité *!*/
+}
+
 .futuristic-link {
     display: inline-block;
     color: #00f7ff;

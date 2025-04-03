@@ -81,6 +81,7 @@ final class Cs2StatusController extends AbstractController
                     'flag' => $mapped['flag'],
                     'capacity' => $capacity,
                     'load' => $load,
+                    'subgroup' => $mapped['subgroup'],
                 ];
             }
         }

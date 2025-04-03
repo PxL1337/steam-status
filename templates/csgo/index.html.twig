@@ -14,7 +14,10 @@
                     <h1 class="mb-0 d-flex align-items-center gap-2">
                         <twig:ux:icon name="game-icons:target-shot" class="icon-gauge-large" />
                         <span>{{ 'title'|trans }}</span>
-                        <span class="beta-badge">BETA</span>
+                        <span class="beta-badge d-inline-flex align-items-center">
+                            {#<twig:ux:icon name="mdi:flask-outline" class="me-1 icon-gauge-small" />#}
+                            BETA
+                        </span>
                     </h1>
 
                 </div>
@@ -80,59 +83,67 @@
                         </div>
                     </div>
 
-                    <!-- Services -->
-                    <div class="row text-center">
-                        {% for serviceName, serviceValue in {
-                            'Scheduler': data.matchmaking.scheduler,
-                            'SessionsLogon': data.services.SessionsLogon,
-                            'SteamCommunity': data.services.SteamCommunity,
-                            'Leaderboards': data.services.Leaderboards
-                        } %}
-                            <div class="col-md-6 mb-3">
-                                <div class="card service-status-card">
-                                    <div class="card-header d-flex align-items-center justify-content-center">
-                                        {% if serviceName == 'Scheduler' %}
-                                            <twig:ux:icon name="mdi:calendar-clock" class="icon-gauge me-1" />
-                                        {% else %}
-                                            <twig:ux:icon name="mdi:steam" class="icon-gauge me-1" />
-                                        {% endif %}
-                                        {{ ('status.services.' ~ serviceName)|trans }}
-                                    </div>
-                                    <div class="card-body">
-                                        {% set statusClass = '' %}
-                                        {% set iconName = '' %}
+                    <!-- Service Load -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex align-items-center">
+                            <twig:ux:icon name="mdi:chart-donut" class="icon-gauge me-2"/>
+                            {{ 'services_load'|trans }}
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                {% for serviceName, serviceValue in {
+                                    'Scheduler': data.matchmaking.scheduler,
+                                    'SessionsLogon': data.services.SessionsLogon,
+                                    'SteamCommunity': data.services.SteamCommunity,
+                                    'Leaderboards': data.services.Leaderboards
+                                } %}
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card service-status-card h-100 border-0 shadow-sm">
+                                            <div class="card-header d-flex align-items-center justify-content-center">
+                                                {% if serviceName == 'Scheduler' %}
+                                                    <twig:ux:icon name="mdi:calendar-clock" class="icon-gauge me-1" />
+                                                {% else %}
+                                                    <twig:ux:icon name="mdi:steam" class="icon-gauge me-1" />
+                                                {% endif %}
+                                                {{ ('status.services.' ~ serviceName)|trans }}
+                                            </div>
+                                            <div class="card-body">
+                                                {% set statusClass = '' %}
+                                                {% set iconName = '' %}
 
-                                        {% if serviceValue in ['normal', 'online', 'full'] %}
-                                            {% set statusClass = 'load-low' %}
-                                            {% set iconName = 'prime:check-circle' %}
-                                        {% elseif serviceValue == 'partial' %}
-                                            {% set statusClass = 'load-medium' %}
-                                            {% set iconName = 'iconoir:warning-circle' %}
-                                        {% elseif serviceValue in ['offline', 'high'] %}
-                                            {% set statusClass = 'load-high' %}
-                                            {% set iconName = 'line-md:close-circle' %}
-                                        {% elseif serviceValue == 'surge' %}
-                                            {% set statusClass = 'load-surge' %}
-                                            {% set iconName = 'mdi:alert-decagram' %}
-                                        {% elseif serviceValue == 'critical' %}
-                                            {% set statusClass = 'load-critical' %}
-                                            {% set iconName = 'mdi:alert-circle-outline' %}
-                                        {% elseif serviceValue == 'delayed' %}
-                                            {% set statusClass = 'load-surge' %}
-                                            {% set iconName = 'mdi:clock-alert-outline' %}
-                                        {% else %}
-                                            {% set statusClass = 'load-idle' %}
-                                            {% set iconName = 'mingcute:sleep-fill' %}
-                                        {% endif %}
+                                                {% if serviceValue in ['normal', 'online', 'full'] %}
+                                                    {% set statusClass = 'load-low' %}
+                                                    {% set iconName = 'prime:check-circle' %}
+                                                {% elseif serviceValue == 'partial' %}
+                                                    {% set statusClass = 'load-medium' %}
+                                                    {% set iconName = 'iconoir:warning-circle' %}
+                                                {% elseif serviceValue in ['offline', 'high'] %}
+                                                    {% set statusClass = 'load-high' %}
+                                                    {% set iconName = 'line-md:close-circle' %}
+                                                {% elseif serviceValue == 'surge' %}
+                                                    {% set statusClass = 'load-surge' %}
+                                                    {% set iconName = 'mdi:alert-decagram' %}
+                                                {% elseif serviceValue == 'critical' %}
+                                                    {% set statusClass = 'load-critical' %}
+                                                    {% set iconName = 'mdi:alert-circle-outline' %}
+                                                {% elseif serviceValue == 'delayed' %}
+                                                    {% set statusClass = 'load-surge' %}
+                                                    {% set iconName = 'mdi:clock-alert-outline' %}
+                                                {% else %}
+                                                    {% set statusClass = 'load-idle' %}
+                                                    {% set iconName = 'mingcute:sleep-fill' %}
+                                                {% endif %}
 
-                                        <span class="{{ statusClass }} d-inline-flex align-items-center">
-                                            <twig:ux:icon name="{{ iconName }}" class="icon-gauge me-1"/>
-                                            {{ ('status.state.' ~ serviceValue)|trans }}
-                                        </span>
+                                                <span class="{{ statusClass }} d-inline-flex align-items-center">
+                                <twig:ux:icon name="{{ iconName }}" class="icon-gauge me-1"/>
+                                {{ ('status.state.' ~ serviceValue)|trans }}
+                            </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endfor %}
                             </div>
-                        {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -210,9 +221,9 @@
                                     <tr>
                                         <td>
                                             {% if dc.flag %}
-                                                <span class="fi fi-{{ dc.flag }}" style="margin-right:6px; width: 32px; height: 24px; border-radius: 4px; background-size: cover;"></span>
+                                                <twig:ux:icon name="circle-flags:{{ dc.flag }}" class="icon-gauge me-1" />
                                             {% endif %}
-                                            {% if dc.city %}{{ dc.city }}{% else %}{{ dc.country }}{% endif %}
+                                            {% if dc.city %}{{ dc.city|trans }}{% else %}{{ dc.country }}{% endif %}
                                         </td>
                                         <td>
                                             {% set capacity = dc.capacity ?? 'n/a' %}

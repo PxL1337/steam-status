@@ -9,7 +9,7 @@ class DCMapper
      */
     private static array $csgoMap = [
         'eu_germany' => [
-            'city' => 'Frankfurt',      // ex. "Frankfurt" si vous voulez un détail
+            'city' => 'Frankfurt',
             'country' => 'Germany',
             'flag' => 'de'
         ],
@@ -46,40 +46,46 @@ class DCMapper
         'us_atlanta' => [
             'city' => 'Atlanta',
             'country' => 'United States',
-            'flag' => 'us'
+            'flag' => 'us-ga',
+            'subgroup' => 'Georgia'
         ],
         'us_california' => [
             'city' => 'Los Angeles',
             'country' => 'United States',
-            'flag' => 'us'
+            'flag' => 'us-ca',
+            'subgroup' => 'California'
         ],
         'us_seattle' => [
             'city' => 'Seattle',
             'country' => 'United States',
-            'flag' => 'us'
+            'flag' => 'us-wa',
+            'subgroup' => 'Washington'
         ],
         'us_virginia' => [
             'city' => 'Virginia',
             'country' => 'United States',
-            'flag' => 'us'
+            'flag' => 'us',
+            'subgroup' => 'Virginia'
         ],
         'us_chicago' => [
             'city' => 'Chicago',
             'country' => 'United States',
-            'flag' => 'us'
+            'flag' => 'us',
+            'subgroup' => 'Illinois'
         ],
         'us_dallas' => [
             'city' => 'Dallas',
             'country' => 'United States',
-            'flag' => 'us'
+            'flag' => 'us-tx',
+            'subgroup' => 'Texas'
         ],
         'brazil' => [
-            'city' => 'Sao Paulo',  // au besoin
+            'city' => 'Sao Paulo',
             'country' => 'Brazil',
             'flag' => 'br'
         ],
         'argentina' => [
-            'city' => 'Buenos Aires',  // ex
+            'city' => 'Buenos Aires',
             'country' => 'Argentina',
             'flag' => 'ar'
         ],
@@ -90,13 +96,14 @@ class DCMapper
         ],
         'hong_kong' => [
             'city' => 'Hong Kong',
-            'country' => 'Hong Kong',  // ou 'Hong Kong (SAR)' selon votre choix
+            'country' => 'Hong Kong',
             'flag' => 'hk'
         ],
         'china_guangdong' => [
             'city' => 'Guangdong',
             'country' => 'China',
-            'flag' => 'cn'
+            'flag' => 'cn',
+            'subgroup' => 'Guangdong'
         ],
         'peru' => [
             'city' => 'Lima',
@@ -116,7 +123,8 @@ class DCMapper
         'china_pudong' => [
             'city' => 'Pudong',
             'country' => 'China',
-            'flag' => 'cn'
+            'flag' => 'cn',
+            'subgroup' => 'Pudong'
         ],
         'india_mumbai' => [
             'city' => 'Mumbai',
@@ -141,12 +149,14 @@ class DCMapper
         'china_beijing' => [
             'city' => 'Beijing',
             'country' => 'China',
-            'flag' => 'cn'
+            'flag' => 'cn',
+            'subgroup' => 'Beijing'
         ],
         'china_chengdu' => [
             'city' => 'Chengdu',
             'country' => 'China',
-            'flag' => 'cn'
+            'flag' => 'cn',
+            'subgroup' => 'Chengdu'
         ],
         'south_africa' => [
             'city' => 'Johannesburg',
@@ -160,35 +170,29 @@ class DCMapper
         ],
     ];
 
-
-    /**
-     * mapCsgoDatacenter($dcName): renvoie un tableau
-     *  [ 'country'=>'Germany','flag'=>'de' ]
-     */
     public static function mapCsgoDatacenter(string $dcName): array
     {
         $key = strtolower(trim($dcName));
         $key = str_replace(' ', '_', $key); // "EU Germany" => "eu_germany"
 
         if (isset(self::$csgoMap[$key])) {
+            $map = self::$csgoMap[$key];
             return [
-                'city' => self::$csgoMap[$key]['city'],
-                'country' => self::$csgoMap[$key]['country'],
-                'flag' => self::$csgoMap[$key]['flag'],
+                'city' => $map['city'],
+                'country' => $map['country'],
+                'flag' => $map['flag'],
+                'subgroup' => $map['subgroup'] ?? $map['country']
             ];
         }
-        // fallback
+
         return [
             'city' => null,
             'country' => $dcName,
-            'flag' => null
+            'flag' => null,
+            'subgroup' => $dcName
         ];
     }
 
-
-    /**
-     * mapSteamDirectoryDc() (inchangé)
-     */
     private static array $directoryMap = [
         'par1' => [
             'city' => 'Paris',
@@ -196,7 +200,6 @@ class DCMapper
             'region' => 'Europe',
             'flag' => 'fr',
         ],
-        // ...
     ];
 
     public static function mapSteamDirectoryDc(string $dc): array

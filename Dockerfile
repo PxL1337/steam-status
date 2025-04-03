@@ -3,6 +3,14 @@ FROM php:8.2-fpm-alpine
 # Install system dependencies
 RUN apk add --no-cache bash git nginx supervisor curl libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev oniguruma-dev libzip-dev icu-dev zlib-dev postgresql-dev nodejs npm
 
+# Ajout des locales FR et EN
+RUN apk add --no-cache icu-libs icu-data-full && \
+    echo "fr_FR.UTF-8 UTF-8\nen_US.UTF-8 UTF-8" > /etc/locale.gen || true
+
+ENV LANG=fr_FR.UTF-8
+ENV LANGUAGE=fr_FR:en_US
+ENV LC_ALL=fr_FR.UTF-8
+
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_pgsql zip intl opcache
 

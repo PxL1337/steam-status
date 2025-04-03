@@ -12,7 +12,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     private string $defaultLocale;
     private array $supportedLocales;
 
-    public function __construct(string $defaultLocale = 'en', array $supportedLocales = ['en', 'fr'])
+    public function __construct(string $defaultLocale = 'fr', array $supportedLocales = ['fr', 'en'])
     {
         $this->defaultLocale = $defaultLocale;
         $this->supportedLocales = $supportedLocales;

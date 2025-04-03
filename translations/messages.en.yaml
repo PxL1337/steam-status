@@ -45,6 +45,7 @@ region:
   Asia: 'Asia'
   Oceania: 'Oceania'
   Africa: 'Africa'
+  Emirates: 'United Arab Emirates'
   Others: 'Others'
 version:
   message_1: "🎉 New version, same bugs?"

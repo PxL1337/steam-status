@@ -51,6 +51,7 @@ final class Cs2StatusController extends AbstractController
             'Asia'     => [],
             'Oceania'  => [],
             'Africa'  => [],
+            'Emirates' => [],
             'Others'   => [],
         ];
 

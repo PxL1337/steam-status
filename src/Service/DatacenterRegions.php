@@ -59,6 +59,10 @@ class DatacenterRegions
             return 'Africa';
         }
 
+        if (str_contains($dcName, 'emirates')) {
+            return 'Emirates';
+        }
+
         return 'Others';
     }
 }

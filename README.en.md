@@ -35,7 +35,8 @@ Symfony application to monitor real-time data about Counter-Strike 2: version in
 
 ## ⚙️ Tech stack
 
-- **Symfony 6.x**
+- **PHP 8.3**
+- **Symfony 7.x**
 - **PostgreSQL**
 - **Twig & Bootstrap**
 - **Symfony UX Turbo, Chart.js, Icons**

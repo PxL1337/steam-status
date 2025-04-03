@@ -46,19 +46,19 @@ class DCMapper
         'us_atlanta' => [
             'city' => 'Atlanta',
             'country' => 'United States',
-            'flag' => 'us-ga',
+            'flag' => 'us',
             'subgroup' => 'Georgia'
         ],
         'us_california' => [
             'city' => 'Los Angeles',
             'country' => 'United States',
-            'flag' => 'us-ca',
+            'flag' => 'us',
             'subgroup' => 'California'
         ],
         'us_seattle' => [
             'city' => 'Seattle',
             'country' => 'United States',
-            'flag' => 'us-wa',
+            'flag' => 'us',
             'subgroup' => 'Washington'
         ],
         'us_virginia' => [
@@ -76,7 +76,7 @@ class DCMapper
         'us_dallas' => [
             'city' => 'Dallas',
             'country' => 'United States',
-            'flag' => 'us-tx',
+            'flag' => 'us',
             'subgroup' => 'Texas'
         ],
         'brazil' => [

@@ -210,13 +210,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for regionCode, datacenters in groupedDatacenters %}
-                            {% if datacenters is not empty %}
+                        {% for regionCode, countries in groupedDatacenters %}
+                            {% if countries is not empty %}
                                 <tr class="table-secondary">
-                                    <td colspan="3">
-                                        <strong>{{ regionLabels[regionCode]|trans }}</strong>
-                                    </td>
+                                    <td colspan="3"><strong>{{ regionLabels[regionCode]|trans }}</strong></td>
                                 </tr>
+                                {% for countryName, datacenters in countries %}
                                 {% for dc in datacenters %}
                                     <tr>
                                         <td>
@@ -230,6 +229,9 @@
                                             {% set capLabel = ('status.state.' ~ capacity)|trans %}
                                             {% set capColor = {
                                                 'full': 'success',
+                                                'low': 'danger',
+                                                'high': 'success',
+                                                'medium': 'warning text-dark',
                                                 'partial': 'warning text-dark',
                                                 'offline': 'dark',
                                                 'n/a': 'secondary'
@@ -237,6 +239,9 @@
 
                                             {% set capIcon = {
                                                 'full': 'prime:check-circle',
+                                                'high': 'line-md:gauge-full',
+                                                'medium': 'line-md:gauge',
+                                                'low': 'line-md:gauge-low',
                                                 'partial': 'line-md:warning-circle',
                                                 'offline': 'line-md:close-circle',
                                                 'n/a': 'line-md:question-circle'
@@ -270,6 +275,7 @@
                                             </span>
                                         </td>
                                     </tr>
+                                {% endfor %}
                                 {% endfor %}
                             {% endif %}
                         {% endfor %}

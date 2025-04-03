@@ -75,7 +75,7 @@ final class Cs2StatusController extends AbstractController
                     $region = 'Autres';
                 }
 
-                $groupedDatacenters[$region][] = [
+                $groupedDatacenters[$region][$mapped['country']][] = [
                     'city' => $mapped['city'],
                     'country' => $mapped['country'],
                     'flag' => $mapped['flag'],

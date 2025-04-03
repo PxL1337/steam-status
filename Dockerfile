@@ -28,6 +28,7 @@ RUN chmod +x /entrypoint.sh
 
 # Prepare runtime permissions
 RUN mkdir -p var/log && chown -R www-data:www-data var && chmod -R 755 /var/www/html
+RUN mkdir -p /var/log/supervisor && chown -R www-data:www-data /var/log/supervisor && chmod -R 755 /var/log/supervisor
 
 EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]

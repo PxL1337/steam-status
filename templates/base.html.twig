@@ -2,9 +2,28 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>{% block title %}Steam Status{% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}Suivi en temps réel des services Steam et Counter-Strike 2. Version, matchmaking, serveurs, joueurs et plus encore !{% endblock %}">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
+        <meta property="og:description" content="{% block og_description %}{{ block('meta_description') }}{% endblock %}">
+        <meta property="og:image" content="{% block og_image %}{{ asset('icons/favicon.svg') }}{% endblock %}">
+        <meta property="og:url" content="{{ app.request.uri }}">
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{% block tt_title %}{{ block('title') }}{% endblock %}">
+        <meta name="twitter:description" content="{% block tt_description %}{{ block('meta_description') }}{% endblock %}">
+        <meta name="twitter:image" content="{% block tt_image %}{{ asset('icons/favicon.svg') }}{% endblock %}">
+        <meta name="twitter:url" content="{{ app.request.uri }}">
+
         <link rel="icon" type="image/svg+xml" href="{{ asset('icons/favicon.svg') }}">
         {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}

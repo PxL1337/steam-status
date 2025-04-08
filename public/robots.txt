@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://cs2status.pixdev.ovh/sitemap.xml
+
+Disallow: /admin
+Disallow: /api
+Disallow: /dev

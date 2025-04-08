@@ -17,7 +17,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 final class Cs2StatusController extends AbstractController
 {
-    #[Route('/', name: 'cs2_status')]
+    #[Route('/', name: 'cs2_status', options: ['sitemap' => true])]
     public function index(
         Cs2StatusRepository $repo,
         ChartBuilderInterface $chartBuilder,

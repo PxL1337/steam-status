@@ -1,0 +1,4 @@
+presta_sitemap:
+  sitemap_file_prefix: sitemap
+  timetolive: 3600
+  route_annotation_listener: true

@@ -9,3 +9,7 @@ when@prod:
     framework:
         asset_mapper:
             missing_import_mode: warn
+        javascript_importmap:
+            preloads: true
+        compiler:
+            minify: true

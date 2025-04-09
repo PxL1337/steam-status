@@ -8,9 +8,6 @@ when@prod:
     framework:
         asset_mapper:
             missing_import_mode: warn  # ✅ dégradé tolérant en prod
-            javascript_importmap:
-                preloads: true        # ✅ ES module <link rel="modulepreload">
-                polyfill: false       # ou true si tu supportes d'anciens navigateurs
             compiler:
                 minify: true          # ✅ minification JS/CSS
                 source_maps: false    # ✅ pas de sourcemap inutile en prod

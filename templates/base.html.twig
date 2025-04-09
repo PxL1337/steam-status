@@ -29,6 +29,14 @@
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Steam Status",
+                "url": "https://cs2status.pixdev.ovh"
+            }
+        </script>
     </head>
     <body>
         {% block body %}{% endblock %}

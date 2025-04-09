@@ -8,7 +8,3 @@ when@prod:
     framework:
         asset_mapper:
             missing_import_mode: warn  # ✅ dégradé tolérant en prod
-        compiler:
-            minify: true          # ✅ minification JS/CSS
-            source_maps: false    # ✅ pas de sourcemap inutile en prod
-            transpile: false      # true si tu as des .ts ou JS moderne non supporté

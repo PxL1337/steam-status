@@ -7,6 +7,7 @@ services:
     ports:
       - "${PORT:-8080}:8080"
     environment:
+      APP_ENV: "${APP_ENV:-prod}"
       STEAM_API_KEY: "${STEAM_API_KEY}"
       DATABASE_URL: "postgresql://symfony:symfony@postgres:5432/symfony?serverVersion=15&charset=utf8"
     entrypoint: ["sh", "/entrypoint.sh"]

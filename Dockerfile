@@ -30,6 +30,9 @@ COPY . .
 RUN npm install
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
+# Compile assets for production
+RUN php bin/console asset-map:compile
+
 # Entrypoint
 COPY docker/prod/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

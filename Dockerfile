@@ -28,7 +28,7 @@ COPY . .
 
 # Install PHP & JS dependencies
 RUN npm install
-RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Compile assets for production
 RUN php bin/console asset-map:compile

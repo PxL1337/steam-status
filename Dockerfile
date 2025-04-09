@@ -32,6 +32,7 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Compile assets for production
 RUN php bin/console asset-map:compile
+RUN php bin/console cache:clear && php bin/console cache:warmup
 
 # Entrypoint
 COPY docker/prod/entrypoint.sh /entrypoint.sh

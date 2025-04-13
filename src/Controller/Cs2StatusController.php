@@ -134,11 +134,10 @@ final class Cs2StatusController extends AbstractController
         $chartServers->setOptions([
             'scales' => [
                 'x' => [
-
                     'time' => [
-                        'unit' => 'minute',         // ou 'hour', 'day'
+                        'unit' => 'hour',         // ou 'hour', 'day'
                         'displayFormats' => [
-                            'minute' => 'HH:mm',    // format d’affichage
+                            'hour' => 'HH',    // format d’affichage
                         ],
                     ],
                 ],
@@ -176,7 +175,7 @@ final class Cs2StatusController extends AbstractController
                     'time' => [
                         'unit' => 'hour',         // ou 'hour', 'day'
                         'displayFormats' => [
-                            'hour' => 'HH:mm',    // format d’affichage
+                            'hour' => 'HH',    // format d’affichage
                         ],
                     ],
                 ],
@@ -214,7 +213,7 @@ final class Cs2StatusController extends AbstractController
                     'time' => [
                         'unit' => 'hour',         // ou 'hour', 'day'
                         'displayFormats' => [
-                            'hour' => 'HH:mm',    // format d’affichage
+                            'hour' => 'HH',    // format d’affichage
                         ],
                     ],
                 ],
@@ -252,7 +251,7 @@ final class Cs2StatusController extends AbstractController
                     'time' => [
                         'unit' => 'hour',         // ou 'hour', 'day'
                         'displayFormats' => [
-                            'hour' => 'HH:mm',    // format d’affichage
+                            'hour' => 'HH',    // format d’affichage
                         ],
                     ],
                 ],

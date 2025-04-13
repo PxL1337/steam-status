@@ -12,5 +12,3 @@ import 'flag-icons/css/flag-icons.min.css';
  */
 import './styles/app.css';
 import './styles/steam.css';
-
-console.log('Hello from assets/app.js – Asset Mapper is alive! 🎉');

@@ -182,6 +182,18 @@ PORT=8080
 
 ---
 
+## 🧪 Tests
+
+To run the PHPUnit test suite locally you must have **PHP** and **Composer** installed.
+Install the dependencies and run the tests with:
+
+```bash
+composer install
+./vendor/bin/phpunit
+```
+
+---
+
 ## 🧵 Messenger Worker
 
 The `scheduler_default` queue is automatically consumed using `supervisord`.  

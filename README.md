@@ -182,6 +182,18 @@ PORT=8080
 
 ---
 
+## 🧪 Tests
+
+Pour exécuter la suite de tests PHPUnit en local, installez **PHP** et **Composer**.
+Installez les dépendances puis lancez les tests :
+
+```bash
+composer install
+./vendor/bin/phpunit
+```
+
+---
+
 ## 🧵 Worker Symfony Messenger
 
 La file `scheduler_default` est automatiquement consommée via `supervisord`.  

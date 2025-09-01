@@ -5,7 +5,20 @@
 html, body {
     margin: 0 !important;
     padding: 0 !important;
+    height: 100%;
     /* Police possible : font-family: "Motiva Sans", Arial, sans-serif; */
+}
+
+.steam-blue,
+.steam-green {
+    min-height: 100dvh; /* dvh = mieux sur mobile */
+    display: flex;
+    flex-direction: column;
+}
+
+.steam-blue > .container,
+.steam-green > .container {
+    flex: 1 0 auto;
 }
 
 .steam-blue {

@@ -1,0 +1,156 @@
+{# templates/steamid/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}SteamID Resolver{% endblock %}
+{% block meta_description %}Résolvez un SteamID à partir d'un pseudo/URL/identifiant et affichez les formats utiles.{% endblock %}
+
+{% block body %}
+    <div class="steam-blue">
+        <div class="container py-4">
+
+            <div class="row mb-3 align-items-center">
+                <div class="col">
+                    <h1 class="mb-0 d-flex align-items-center gap-2">
+                        <twig:ux:icon name="mdi:account-search-outline" class="icon-gauge-large" />
+                        <span>SteamID Resolver</span>
+                    </h1>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-sm btn-secondary" href="{{ path('cs2_status') }}">
+                        <twig:ux:icon name="mdi:arrow-left" class="icon-gauge me-1" />Retour
+                    </a>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header d-flex align-items-center">
+                    <twig:ux:icon name="mdi:form-textbox" class="icon-gauge me-2" />
+                    Entrez un SteamID, un vanity ou une URL Steam
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ path('steam_id') }}" class="row gy-2 gx-2">
+                        <div class="col-12 col-md-10">
+                            <input
+                                    type="text"
+                                    name="q"
+                                    value="{{ q }}"
+                                    class="form-control"
+                                    placeholder="Ex: STEAM_0:1:12345, [U:1:12345], 7656119..., https://steamcommunity.com/id/gaben"
+                            />
+                        </div>
+                        <div class="col-12 col-md-2 d-grid">
+                            <button class="btn btn-primary" type="submit">
+                                <twig:ux:icon name="mdi:magnify" class="icon-gauge me-1" />
+                                Résoudre
+                            </button>
+                        </div>
+                    </form>
+
+                    {% if error %}
+                        <div class="alert alert-danger mt-3 d-flex align-items-center">
+                            <twig:ux:icon name="mdi:alert-circle-outline" class="icon-gauge me-2" />
+                            {{ error }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if result %}
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                        <twig:ux:icon name="mdi:information-outline" class="icon-gauge me-2" />
+                        SteamID
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <tbody>
+                            <tr>
+                                <td>Vanity URL</td>
+                                <td class="text-end">
+                                    {% if result.vanity %}
+                                        <a href="{{ result.communityUrl }}" target="_blank">{{ result.vanity }}</a>
+                                    {% else %}
+                                        <span class="text-muted">N/A</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>AccountID</td>
+                                <td class="text-end">
+                                    <code>{{ result.accountId }}</code>
+                                    <button class="btn btn-sm" onclick="navigator.clipboard.writeText('{{ result.accountId }}')">
+                                        <twig:ux:icon name="mdi:content-copy" class="icon-gauge" />
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SteamID</td>
+                                <td class="text-end">
+                                    <a href="{{ result.communityUrl }}" target="_blank">{{ result.steam64 }}</a>
+                                    <button class="btn btn-sm" onclick="navigator.clipboard.writeText('{{ result.steam64 }}')">
+                                        <twig:ux:icon name="mdi:content-copy" class="icon-gauge" />
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Steam2 ID</td>
+                                <td class="text-end">
+                                    <code>{{ result.steam2 }}</code>
+                                    <button class="btn btn-sm" onclick="navigator.clipboard.writeText('{{ result.steam2 }}')">
+                                        <twig:ux:icon name="mdi:content-copy" class="icon-gauge" />
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Steam3 ID</td>
+                                <td class="text-end">
+                                    <code>{{ result.steam3 }}</code>
+                                    <button class="btn btn-sm" onclick="navigator.clipboard.writeText('{{ result.steam3 }}')">
+                                        <twig:ux:icon name="mdi:content-copy" class="icon-gauge" />
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Short URL</td>
+                                <td class="text-end">
+                                    {% if result.shortUrl %}
+                                        <a href="{{ result.shortUrl }}" target="_blank">{{ result.shortUrl }}</a>
+                                        <button class="btn btn-sm" onclick="navigator.clipboard.writeText('{{ result.shortUrl }}')">
+                                            <twig:ux:icon name="mdi:content-copy" class="icon-gauge" />
+                                        </button>
+                                    {% else %}
+                                        <span class="text-muted">N/A</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CS2 Friend</td>
+                                <td class="text-end">
+                                    <code>{{ result.friendCode ?? 'N/A' }}</code>
+                                    {% if result.friendCode %}
+                                        <button class="btn btn-sm" onclick="navigator.clipboard.writeText('{{ result.friendCode }}')">
+                                            <twig:ux:icon name="mdi:content-copy" class="icon-gauge" />
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Steam3 Hex</td>
+                                <td class="text-end">
+                                    <code>{{ result.steam3hex ?? 'N/A' }}</code>
+                                    {% if result.steam3hex %}
+                                        <button class="btn btn-sm" onclick="navigator.clipboard.writeText('{{ result.steam3hex }}')">
+                                            <twig:ux:icon name="mdi:content-copy" class="icon-gauge" />
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}

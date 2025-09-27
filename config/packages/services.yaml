@@ -1,0 +1,7 @@
+# config/packages/rate_limiter.yaml
+framework:
+  rate_limiter:
+    steam_api:
+      policy: fixed_window
+      limit: 1
+      interval: '5 seconds'

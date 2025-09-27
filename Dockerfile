@@ -12,7 +12,7 @@ ENV LANGUAGE=fr_FR:en_US
 ENV LC_ALL=fr_FR.UTF-8
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_pgsql zip intl opcache
+RUN docker-php-ext-install pdo pdo_pgsql zip intl opcache gmp fileinfo curl gd mbstring exif bz2
 
 # Install Composer & Symfony CLI
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer

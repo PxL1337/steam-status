@@ -8,32 +8,37 @@ class DCMapper
      * Dictionnaire pour ICSGOServers_730 (ex: "EU Germany" => pays,flag).
      */
     private static array $csgoMap = [
-        'eu_germany' => [
+        'eu_frankfurt' => [
             'city' => 'Frankfurt',
             'country' => 'Germany',
             'flag' => 'de'
         ],
-        'eu_spain' => [
+        'eu_falkenstein' => [
+            'city' => 'Falkenstein',
+            'country' => 'Germany',
+            'flag' => 'de'
+        ],
+        'eu_madrid' => [
             'city' => 'Madrid',
             'country' => 'Spain',
             'flag' => 'es'
         ],
-        'eu_austria' => [
+        'eu_vienna' => [
             'city' => 'Vienna',
             'country' => 'Austria',
             'flag' => 'at'
         ],
-        'eu_poland' => [
+        'eu_warsaw' => [
             'city' => 'Warsaw',
             'country' => 'Poland',
             'flag' => 'pl'
         ],
-        'eu_sweden' => [
+        'eu_stockholm' => [
             'city' => 'Stockholm',
             'country' => 'Sweden',
             'flag' => 'se'
         ],
-        'eu_finland' => [
+        'eu_helsinki' => [
             'city' => 'Helsinki',
             'country' => 'Finland',
             'flag' => 'fi'
@@ -174,7 +179,6 @@ class DCMapper
     {
         $key = strtolower(trim($dcName));
         $key = str_replace(' ', '_', $key); // "EU Germany" => "eu_germany"
-
         if (isset(self::$csgoMap[$key])) {
             $map = self::$csgoMap[$key];
             return [
